@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Graciosa Haven - Tu Refugio en el Paraíso</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d7ff2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101922",
+                        "accent-sand": "#f3e5ab",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-20 py-4">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-3xl">sailing</span>
+<h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Graciosa Haven</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#inicio">Inicio</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#servicios">Servicios</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#galeria">Galería</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#contacto">Contacto</a>
+</nav>
+<button class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20">
+                    Reserva Ahora
+                </button>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative w-full px-4 md:px-10 py-6 md:py-10" id="inicio">
+<div class="max-w-7xl mx-auto">
+<div class="relative flex min-h-[600px] w-full flex-col items-center justify-center overflow-hidden rounded-xl bg-cover bg-center p-8 text-center" data-alt="Vista panorámica de una playa virgen de arena blanca y aguas turquesas en La Graciosa" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHiidQesFmNKlq9NKrgSta5eDa9H-5EP2LHuAw5ulJTXzvbEdB-W9R9Kioloi6bIEQgp4HEg7qitR6OYJfCPEj1LZ14ijDU-r-Yxiv-n5Fcfvlw2AwPC0w5qAXhHhA8hkWBZeI2ZPWUSZKnhixDeLr2z3FEWDznWG2CwHNr7JzjtRZkY9Qv5_aTbEqfRe_L_5cpfX1sMPyO531lAFlNHalDPpSuVqHdVhS84L79pOpt8qbGWpIEy-PB55gCXwhyVv7_8CcOigefHY');">
+<div class="max-w-3xl space-y-6">
+<h1 class="text-white text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
+                            Descubre el Paraíso en <span class="text-accent-sand">La Graciosa</span>
+</h1>
+<p class="text-slate-100 text-lg md:text-xl font-medium">
+                            Tu refugio exclusivo frente al mar en la isla más virgen de Canarias. Sin prisas, sin asfalto, solo tú y el océano.
+                        </p>
+<div class="pt-4">
+<button class="bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-xl text-lg font-bold transition-transform hover:scale-105 shadow-xl shadow-primary/30">
+                                Reserva Directa sin Comisiones
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="py-20 px-6 md:px-20 bg-white dark:bg-slate-900/50" id="servicios">
+<div class="max-w-7xl mx-auto">
+<div class="mb-16 text-center md:text-left">
+<span class="text-primary font-bold uppercase tracking-widest text-sm">Tu estancia perfecta</span>
+<h2 class="text-3xl md:text-5xl font-black mt-2 text-slate-900 dark:text-slate-100">Comodidades de Ensueño</h2>
+<div class="h-1.5 w-24 bg-accent-sand mt-4 rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="group p-8 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark hover:border-primary/40 transition-all hover:shadow-lg">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">waves</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Cerca del mar</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">A tan solo unos pasos de la arena dorada y el sonido relajante de las olas atlánticas.</p>
+</div>
+<!-- Feature 2 -->
+<div class="group p-8 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark hover:border-primary/40 transition-all hover:shadow-lg">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">wb_sunny</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Terraza privada</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">Disfruta de atardeceres inolvidables y cenas bajo las estrellas en tu propio espacio exterior.</p>
+</div>
+<!-- Feature 3 -->
+<div class="group p-8 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark hover:border-primary/40 transition-all hover:shadow-lg">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">wifi</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Wifi alta velocidad</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">Conexión ultrarrápida ideal para nómadas digitales o para compartir tus mejores momentos.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Gallery Section -->
+<section class="py-20 px-6 md:px-20" id="galeria">
+<div class="max-w-7xl mx-auto">
+<div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<span class="text-primary font-bold uppercase tracking-widest text-sm">Galería</span>
+<h2 class="text-3xl md:text-5xl font-black mt-2">Un vistazo al paraíso</h2>
+</div>
+<p class="text-slate-600 dark:text-slate-400 max-w-md">
+                        Explora los rincones de nuestro apartamento y la belleza natural que rodea la octava isla de Canarias.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[200px]">
+<div class="md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Salón moderno del apartamento con decoración playera en tonos blancos y azules" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABUnQPTos94GUCXlzN0Wgyh3kJf3TOK-qAyujMWE-8KvG-UGjKlwF0EwI6GxZv2umHdzhLvLLy5baeW9t9gZZfvwbY5-_icyDwZ1pOBKdlJnwWCuFXDecF0FOSJA5VH5YHy4eqjcH3ysFqDwbbt6y2XqdtgE4Kv-6J6J9MxitYEaZ0ZoUqiIVKaWkS9Ns7uwumVywWF1ee4yh-A_BZj9kM3PiP4jJLGYOVaOmZOE9136KjzcfJK9K3mZKpVsLyw6w3Ybx_f3Hi3qs');"></div>
+<div class="rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Dormitorio principal luminoso con vistas parciales al mar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAfNoESdSGT71LxVFbkvywlj6JmFMFA5uo-6Zm3KW2kaJBTkya7rS42n0LWHh21jAVR0g9TAEJNwD_0jeM7HZgdu8lElSg32QuF929k9G8A5fiUDNEUARKQ5I4IzOGnDvVkDsjBPR--D1pOwry4wbao6-G9xqnm8EgGFX_XSWxh8OqDdd2Q4rwuIjhpB-NBVFBdp_SMWvW7O5lWfV3803-Jd9jBMS7NYULAWssaCi4kXTrXbhFewo_JfZH7w6nxybc6qzXMjynqI7Y');"></div>
+<div class="rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Terraza exterior con hamacas y mesa para desayunar al sol" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCccyXhKPP-SYa1KpMB6Mqt2uaHN78mnYfiblrcRQ4GFaFD2CZgS2ALSTOgPtEvys_wiA65TiuyBoNzgmSBuJwUONHhtAc0xwOb8AGwB9xE1wtyxea-x9an7Xu_VeLEpEp3FKySlncL5vFqWRjEqlPu4D7PNuAxgBtm6X5Ll-PpGypYYsk2UnReBY0wt-PJCXQwWeD3KA7Er9cSrW30r8b4P_3g8sWjT3vGsoJN-iEaxUGPLSFltHsOBFdX1lK6mWKZZQCIlsJ66uA');"></div>
+<div class="md:col-span-2 rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Paisaje de los volcanes y playas vírgenes de La Graciosa" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC-3sXvWBanuQ-7bDOgGm17Ajuh2s9zb0pS4I8ud47KeA4zEcv8nriHbAPy6kKWcuPFdTOO9ZMa83o5HQu61I9HrkQ2tkZwWfWu5xh5a5k6sLROW2o0h8TLCCW7QRBpm2J2aLtpDtpxhtBwYEvKYxpamks_Weo8z_qvFBeFThV3UZrn8_GpU0HHXJJ80lxpn8f5_AnRpQEOY8Qoa44B9GbGnFKcParNWpqHKfW5kTLkE2enidMIjMBaYAgOuQ6e7v0hfiFAGrHzNyg');"></div>
+<div class="rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Cocina totalmente equipada con acabados modernos" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDD6iRE8CX5jCXrvzveFlJ_d25Rb3KyRB7l69VxIdq7uhZOgGUAPn6KioK70Wu5xyRfiaAZDSa6RTBmNhXsJrYOv6dGT3-nYwPS0oSJ-3yOMozlIk7gK4RQmj1nD-W1PRltR2FJ2H1Vj46wCSocpHhFFC-q7GpavHEm6An-h7bxSNMz2FbU2qsSVwpu_G5HmEUibtMDZyHMrStiAZDCWU0Gq4SjpoXa-isD_bTdmGi24Rn_dhAFq54S_JqL-Rs19yJlTt4y0eyWZWs');"></div>
+<div class="rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Detalle de la decoración artesanal inspirada en el océano" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBtqC_v8IbRnnVT1FGqMbYz4JFYZUUUm96RPAf11mL7vybdgO2uDubyoQneAyVJ6_ukQn7Au1_4afj3e4U78FETuCZM0MSZ_lQGyxb-EswXaFJE9NDo8qF_PQsCkfX_1EHkFl5p9w3rUppeHr1EJy6EUoLdSL3IztNiJS293uPwc8PkzUMVu-cxRkVEORoN4nKARpkYUk3jZDlB8cjViwGFUMJi4Y2zQOxrJ76CAfVhigQuAXV_N0x2RpbbZoqVLJNx6ogDXflSh7s');"></div>
+</div>
+</div>
+</section>
+<!-- Booking Section -->
+<section class="py-20 px-6 md:px-20 bg-primary/5" id="contacto">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="text-4xl md:text-5xl font-black mb-6">Tu escapada comienza aquí</h2>
+<p class="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                            Reserva directamente con nosotros para obtener el mejor precio garantizado. Sin intermediarios, sin comisiones ocultas, solo trato directo y cercano.
+                        </p>
+<ul class="space-y-4 mb-10">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<span class="font-medium">Confirmación inmediata</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<span class="font-medium">Política de cancelación flexible</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<span class="font-medium">Atención personalizada 24/7</span>
+</li>
+</ul>
+<div class="flex items-center gap-4 p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">
+<div class="size-12 bg-accent-sand rounded-full flex items-center justify-center text-slate-900">
+<span class="material-symbols-outlined">map</span>
+</div>
+<div>
+<p class="text-sm text-slate-500">Ubicación</p>
+<p class="font-bold">Caleta de Sebo, La Graciosa</p>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-8 md:p-10 rounded-3xl shadow-xl shadow-primary/10">
+<form class="space-y-5">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-sm font-semibold">Entrada</label>
+<input class="w-full rounded-lg border-primary/20 bg-background-light dark:bg-background-dark focus:border-primary focus:ring-primary" type="date"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold">Salida</label>
+<input class="w-full rounded-lg border-primary/20 bg-background-light dark:bg-background-dark focus:border-primary focus:ring-primary" type="date"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold">Nombre completo</label>
+<input class="w-full rounded-lg border-primary/20 bg-background-light dark:bg-background-dark focus:border-primary focus:ring-primary" placeholder="Ej. Juan Pérez" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold">Email</label>
+<input class="w-full rounded-lg border-primary/20 bg-background-light dark:bg-background-dark focus:border-primary focus:ring-primary" placeholder="hola@ejemplo.com" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold">Mensaje (opcional)</label>
+<textarea class="w-full rounded-lg border-primary/20 bg-background-light dark:bg-background-dark focus:border-primary focus:ring-primary" placeholder="¿Alguna petición especial?" rows="3"></textarea>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-primary/20 mt-4" type="submit">
+                                Solicitar Reserva
+                            </button>
+<p class="text-center text-xs text-slate-400 mt-4">
+                                Al solicitar la reserva aceptas nuestra política de privacidad. Te responderemos en menos de 12h.
+                            </p>
+</form>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-slate-900 text-white py-16 px-6 md:px-20">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+<div class="col-span-1 md:col-span-2">
+<div class="flex items-center gap-2 text-primary mb-6">
+<span class="material-symbols-outlined text-3xl">sailing</span>
+<h2 class="text-2xl font-bold tracking-tight text-white">Graciosa Haven</h2>
+</div>
+<p class="text-slate-400 max-w-sm mb-6 leading-relaxed">
+                            Tu casa lejos de casa en la joya escondida de las Islas Canarias. Calidad, confort y respeto por el entorno natural de La Graciosa.
+                        </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#">
+<span class="material-symbols-outlined">share</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#">
+<span class="material-symbols-outlined">photo_camera</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#">
+<span class="material-symbols-outlined">alternate_email</span>
+</a>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-lg mb-6">Navegación</h4>
+<ul class="space-y-4 text-slate-400">
+<li><a class="hover:text-white transition-colors" href="#">Inicio</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Servicios</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Galería</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Tarifas</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-lg mb-6">Legal</h4>
+<ul class="space-y-4 text-slate-400">
+<li><a class="hover:text-white transition-colors" href="#">Aviso Legal</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Política de Privacidad</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Política de Cookies</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Licencia: VV-35-12345</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-slate-500 text-sm">
+                        © 2024 Graciosa Haven. Todos los derechos reservados.
+                    </p>
+<div class="flex items-center gap-2 text-slate-500 text-sm">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span>Caleta de Sebo, La Graciosa, España</span>
+</div>
+</div>
+</div>
+</footer>
+</div>
+</body></html>
