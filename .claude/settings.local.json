@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command \"Remove-Item -Recurse -Force ''c:\\\\Users\\\\marco\\\\Desktop\\\\antigravity\\\\web pastri\\\\dist''; Remove-Item -Force ''c:\\\\Users\\\\marco\\\\Desktop\\\\antigravity\\\\web pastri\\\\index.js''; Remove-Item -Force ''c:\\\\Users\\\\marco\\\\Desktop\\\\antigravity\\\\web pastri\\\\global.css''; Remove-Item -Force ''c:\\\\Users\\\\marco\\\\Desktop\\\\antigravity\\\\web pastri\\\\package-lock.json''; Write-Host ''Listo''\")",
+      "Bash(cmd /c \"rd /s /q \"\"c:\\\\Users\\\\marco\\\\Desktop\\\\antigravity\\\\web pastri\\\\dist\"\" && del \"\"c:\\\\Users\\\\marco\\\\Desktop\\\\antigravity\\\\web pastri\\\\index.js\"\" && del \"\"c:\\\\Users\\\\marco\\\\Desktop\\\\antigravity\\\\web pastri\\\\global.css\"\" && del \"\"c:\\\\Users\\\\marco\\\\Desktop\\\\antigravity\\\\web pastri\\\\package-lock.json\"\" && echo Listo\")"
+    ]
+  }
+}

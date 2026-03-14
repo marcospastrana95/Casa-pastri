@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva Confirmada - Casa Pastri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 flex items-center justify-center min-h-screen p-6">
+    <div class="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 text-center animate-in fade-in zoom-in duration-500">
+        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span class="material-icons text-5xl">check_circle</span>
+        </div>
+        <h1 class="text-3xl font-black text-slate-900 mb-4">¡Reserva Confirmada!</h1>
+        <p class="text-slate-600 mb-8 leading-relaxed">
+            Gracias por confiar en Casa Pastri. Hemos recibido tu pago y tu reserva en La Graciosa está asegurada.
+        </p>
+        <div class="bg-slate-50 rounded-2xl p-4 mb-8 text-sm text-left border border-slate-100">
+            <p class="text-slate-500 mb-2">Próximos pasos:</p>
+            <ul class="space-y-2 text-slate-700">
+                <li class="flex gap-2"><span class="material-icons text-blue-500 text-sm">mail</span> Recibirás un email con los detalles.</li>
+                <li class="flex gap-2"><span class="material-icons text-blue-500 text-sm">directions_boat</span> Te ayudaremos a organizar el ferry.</li>
+            </ul>
+        </div>
+        <a href="/" class="inline-block w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-colors">Volver al Inicio</a>
+    </div>
+</body>
+</html>

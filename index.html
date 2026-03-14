@@ -1,15 +1,184 @@
 <!DOCTYPE html>
+<html lang="es">
 
-<html lang="es"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Graciosa Haven - Tu Refugio en el Paraíso</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Casa Pastri - Tu refugio en La Graciosa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            z-index: 0;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #0d7ff2;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(13, 127, 242, 0.5);
+        }
+
+        /* Lightbox Styles */
+        #lightbox {
+            transition: opacity 0.3s ease;
+        }
+
+        #lightbox.active {
+            opacity: 1;
+        }
+
+        #lightbox-img {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        #lightbox.active #lightbox-img {
+            transform: scale(1);
+        }
+
+        .lightbox-btn {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .lightbox-close {
+            top: 32px;
+            right: 32px;
+        }
+
+        .lightbox-prev {
+            left: 32px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .lightbox-next {
+            right: 32px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .content-fade {
+            transition: opacity 0.2s ease;
+        }
+
+        @media (max-width: 768px) {
+
+            .lightbox-prev,
+            .lightbox-next {
+                bottom: 32px;
+                top: auto;
+                transform: none;
+            }
+
+            .lightbox-prev {
+                left: calc(50% - 60px);
+            }
+
+            .lightbox-next {
+                right: calc(50% - 60px);
+            }
+        }
+
+        /* Invoice & Payment Cloud Styles */
+        .invoice-card {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(13, 127, 242, 0.1);
+        }
+
+        .invoice-header {
+            background: linear-gradient(135deg, #0d7ff2 0%, #0a64c0 100%);
+            padding: 1.5rem;
+            color: white;
+        }
+
+        .payment-cloud {
+            background: #e0f2fe;
+            border: 1px dashed #0d7ff2;
+            border-radius: 1rem;
+            padding: 1rem;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .payment-cloud::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #e0f2fe;
+            filter: drop-shadow(0 2px 2px rgba(13, 127, 242, 0.2));
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 20px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+
+    <script id="tailwind-config">
+        window.tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
@@ -22,239 +191,1346 @@
                     fontFamily: {
                         "display": ["Plus Jakarta Sans"]
                     },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
                 },
             },
         }
     </script>
-<style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-    </style>
 </head>
+
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
-<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-<!-- Navigation -->
-<header class="sticky top-0 z-50 w-full border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-20 py-4">
-<div class="max-w-7xl mx-auto flex items-center justify-between">
-<div class="flex items-center gap-2 text-primary">
-<span class="material-symbols-outlined text-3xl">sailing</span>
-<h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Graciosa Haven</h2>
-</div>
-<nav class="hidden md:flex items-center gap-8">
-<a class="text-sm font-medium hover:text-primary transition-colors" href="#inicio">Inicio</a>
-<a class="text-sm font-medium hover:text-primary transition-colors" href="#servicios">Servicios</a>
-<a class="text-sm font-medium hover:text-primary transition-colors" href="#galeria">Galería</a>
-<a class="text-sm font-medium hover:text-primary transition-colors" href="#contacto">Contacto</a>
-</nav>
-<button class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20">
-                    Reserva Ahora
+    <div class="relative flex min-h-screen w-full flex-col" style="overflow-x: clip;">
+        <!-- Navigation -->
+        <header
+            class="sticky top-0 z-50 w-full border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md py-4">
+            <div class="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-primary">
+                    <span class="material-icons text-3xl">sailing</span>
+                    <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Casa Pastri</h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <nav class="hidden lg:flex items-center gap-8">
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="#inicio"
+                            data-i18n="nav_home">Inicio</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="#servicios"
+                            data-i18n="nav_services">Servicios</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="#galeria"
+                            data-i18n="nav_gallery">Galería</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="#disponibilidad"
+                            data-i18n="nav_availability">Disponibilidad</a>
+
+                    </nav>
+
+                    <!-- Language Selector -->
+                    <div class="relative group ml-4">
+                        <button
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-sm font-bold border border-primary/10">
+                            <span id="current-lang-flag">🇪🇸</span>
+                            <span id="current-lang-code" class="uppercase">ES</span>
+                            <span class="material-icons text-xs">expand_more</span>
+                        </button>
+                        <div
+                            class="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-primary/10 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-[60]">
+                            <button onclick="window.setLanguage('es')"
+                                class="w-full text-left px-4 py-2 hover:bg-primary/5 flex items-center gap-3 transition-colors">
+                                <span>🇪🇸</span> <span class="text-sm">Español</span>
+                            </button>
+                            <button onclick="window.setLanguage('en')"
+                                class="w-full text-left px-4 py-2 hover:bg-primary/5 flex items-center gap-3 transition-colors">
+                                <span>🇬🇧</span> <span class="text-sm">English</span>
+                            </button>
+                            <button onclick="window.setLanguage('de')"
+                                class="w-full text-left px-4 py-2 hover:bg-primary/5 flex items-center gap-3 transition-colors">
+                                <span>🇩🇪</span> <span class="text-sm">Deutsch</span>
+                            </button>
+                            <button onclick="window.setLanguage('fr')"
+                                class="w-full text-left px-4 py-2 hover:bg-primary/5 flex items-center gap-3 transition-colors">
+                                <span>🇫🇷</span> <span class="text-sm">Français</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button onclick="document.getElementById('disponibilidad').scrollIntoView({behavior: 'smooth'})"
+                        class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20"
+                        data-i18n="btn_book_now">
+                        Reserva Ahora
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="relative w-full py-6 md:py-10" id="inicio">
+            <div class="max-w-7xl mx-auto px-4 md:px-10">
+                <div
+                    class="relative flex min-h-[600px] w-full flex-col items-center justify-center overflow-hidden rounded-3xl p-8 text-center bg-slate-100/10 backdrop-blur-sm border border-white/10">
+                    <!-- Slider Backgrounds -->
+                    <div id="hero-slider" class="absolute inset-0 z-0">
+                        <div class="hero-slide active"
+                            style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('assets/images/entrada.jpg');">
+                        </div>
+                        <div class="hero-slide"
+                            style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('assets/images/foto dron isla.jpg');">
+                        </div>
+                        <div class="hero-slide"
+                            style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('assets/images/salon1.jpg');">
+                        </div>
+                        <div class="hero-slide"
+                            style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('assets/images/atardecer1.jpg');">
+                        </div>
+                        <div class="hero-slide"
+                            style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('assets/images/puerto.jpg');">
+                        </div>
+                        <div class="hero-slide"
+                            style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('assets/images/lasconchas.jpg');">
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative z-10 max-w-3xl space-y-6 content-fade">
+                        <h1 class="text-white text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
+                            <span data-i18n="hero_title_1">Despierta donde el</span> <span class="text-accent-sand"
+                                data-i18n="hero_title_2">tiempo se detiene</span>
+                        </h1>
+                        <p class="text-slate-100 text-lg md:text-xl font-medium" data-i18n="hero_description">
+                            En La Graciosa no hay asfalto ni prisas. Solo el sonido del viento, el mar y una casa
+                            sencilla pensada para quienes buscan el lujo de no hacer nada.
+                        </p>
+                        <div class="pt-4">
+                            <button
+                                onclick="document.getElementById('disponibilidad').scrollIntoView({behavior: 'smooth'})"
+                                class="bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-xl text-lg font-bold transition-transform hover:scale-105 shadow-xl shadow-primary/30"
+                                data-i18n="hero_cta">
+                                Mira si tenemos sitio para ti
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Slider Dots -->
+                    <div id="slider-dots" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+                        <div class="dot active" onclick="manualGoTo(0)"></div>
+                        <div class="dot" onclick="manualGoTo(1)"></div>
+                        <div class="dot" onclick="manualGoTo(2)"></div>
+                        <div class="dot" onclick="manualGoTo(3)"></div>
+                        <div class="dot" onclick="manualGoTo(4)"></div>
+                        <div class="dot" onclick="manualGoTo(5)"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20 bg-white dark:bg-slate-900/50" id="servicios">
+            <div class="max-w-7xl mx-auto px-6 md:px-10">
+                <div class="mb-16 text-center md:text-left content-fade">
+                    <span class="text-primary font-bold uppercase tracking-widest text-sm" data-i18n="feat_tag">Vivir la
+                        octava isla</span>
+                    <h2 class="text-3xl md:text-5xl font-black mt-2 text-slate-900 dark:text-slate-100"
+                        data-i18n="feat_title">Donde el silencio es el protagonista</h2>
+                    <div class="h-1.5 w-24 bg-accent-sand mt-4 rounded-full"></div>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mt-6 max-w-2xl leading-relaxed"
+                        data-i18n="feat_description">
+                        La Graciosa es un refugio de calles de arena y barcos de pesca. Aquí no vienes a ver museos,
+                        vienes a vivir el ritmo de la marea. En Casa Pastri te ofrecemos la base perfecta: cómoda,
+                        honesta y pensada para que te sientas un graciosero más.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div
+                        class="group p-8 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark feature-card transition-all">
+                        <div
+                            class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-icons text-3xl">waves</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" data-i18n="feat_1_title">La orilla a 5 minutos</h3>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="feat_1_desc">Lo
+                            suficientemente cerca para ir
+                            descalzo, lo suficientemente lejos para dormir en calma absoluta.</p>
+                    </div>
+                    <div
+                        class="group p-8 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark feature-card transition-all">
+                        <div
+                            class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-icons text-3xl">coffee</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" data-i18n="feat_2_title">Tu café con brisa</h3>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="feat_2_desc">Un patio
+                            exterior con mesa y
+                            sillas para ver cómo despierta el pueblo antes de que el sol caliente la arena.</p>
+                    </div>
+                    <div
+                        class="group p-8 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark feature-card transition-all">
+                        <div
+                            class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-icons text-3xl">wifi_off</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" data-i18n="feat_3_title">Desconexión real</h3>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="feat_3_desc">Tenemos
+                            wifi, claro. Pero nuestro
+                            mejor ancho de banda es el silencio que rodea la casa cada noche.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="py-20" id="galeria">
+            <div class="max-w-7xl mx-auto px-6 md:px-10">
+                <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4 content-fade">
+                    <div>
+                        <span class="text-primary font-bold uppercase tracking-widest text-sm" data-i18n="gall_tag">La
+                            Casa</span>
+                        <h2 class="text-3xl md:text-5xl font-black mt-2" data-i18n="gall_title">Tu refugio en la arena…
+                        </h2>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 max-w-md" data-i18n="gall_desc">
+                        Dos habitaciones, cocina equipada y todo lo que realmente necesitas (y nada de lo que te sobra).
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[200px]">
+                    <div class="md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden bg-cover bg-center cursor-pointer hover:opacity-90 transition-opacity gallery-item"
+                        onclick="window.openLightbox(0)" style="background-image: url('assets/images/salon1.jpg');">
+                    </div>
+                    <div class="rounded-2xl overflow-hidden bg-cover bg-center cursor-pointer hover:opacity-90 transition-opacity gallery-item"
+                        onclick="window.openLightbox(1)"
+                        style="background-image: url('assets/images/habitacion1-1.jpg');">
+                    </div>
+                    <div class="rounded-2xl overflow-hidden bg-cover bg-center cursor-pointer hover:opacity-90 transition-opacity gallery-item"
+                        onclick="window.openLightbox(2)"
+                        style="background-image: url('assets/images/habitacion2-1.jpg');">
+                    </div>
+                    <div class="md:col-span-2 rounded-2xl overflow-hidden bg-cover bg-center cursor-pointer hover:opacity-90 transition-opacity gallery-item"
+                        onclick="window.openLightbox(3)" style="background-image: url('assets/images/lasconchas.jpg');">
+                    </div>
+                    <div class="rounded-2xl overflow-hidden bg-cover bg-center cursor-pointer hover:opacity-90 transition-opacity gallery-item"
+                        onclick="window.openLightbox(4)" style="background-image: url('assets/images/cocina.jpg');">
+                    </div>
+                    <div class="rounded-2xl overflow-hidden bg-cover bg-center cursor-pointer hover:opacity-90 transition-opacity gallery-item"
+                        onclick="window.openLightbox(5)" style="background-image: url('assets/images/baño.jpg');"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Description Section -->
+        <section class="py-20 bg-white dark:bg-slate-900/50" id="el-respiro">
+            <div class="max-w-7xl mx-auto px-6 md:px-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center content-fade">
+                    <div>
+                        <span class="text-primary font-bold uppercase tracking-widest text-sm"
+                            data-i18n="feat_tag">Vivir la octava isla</span>
+                        <h2 class="text-4xl md:text-5xl font-black mt-2 mb-6 text-slate-900 dark:text-slate-100"
+                            data-i18n="book_title">¿Buscas un respiro?</h2>
+                        <div class="h-1.5 w-24 bg-accent-sand mb-8 rounded-full"></div>
+                        <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed"
+                            data-i18n="book_desc">
+                            Casa Pastri tiene espacio para 4 personas y la honestidad de una casa graciosera de verdad.
+                            Cuéntanos cuándo planeas venir y te ayudaremos a organizar tu llegada con el ferry desde
+                            Órzola.
+                        </p>
+                        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-700 dark:text-slate-300">
+                            <li class="flex items-center gap-3">
+                                <span class="material-icons text-primary">check_circle</span>
+                                <span class="font-medium text-sm" data-i18n="book_feat_1">Confirmación inmediata</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="material-icons text-primary">check_circle</span>
+                                <span class="font-medium text-sm" data-i18n="book_feat_2">Política flexible</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="relative group">
+                        <div class="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
+                            <img src="assets/images/salon1.jpg" alt="Casa Pastri"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        </div>
+                        <div
+                            class="absolute bottom-4 right-4 bg-accent-sand p-6 rounded-2xl shadow-xl hidden md:block">
+                            <p class="text-slate-900 font-bold" data-i18n="book_loc_val">Caleta de Sebo, La Graciosa</p>
+                            <p class="text-sm text-slate-700 opacity-70" data-i18n="book_loc_label">Ubicación</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Integrated Booking Section -->
+        <section class="py-24 bg-background-light dark:bg-slate-900" id="disponibilidad">
+            <div class="max-w-7xl mx-auto px-6 md:px-10">
+                <div class="mb-16 text-center content-fade">
+                    <span class="text-primary font-bold uppercase tracking-widest text-sm" data-i18n="avail_tag">Tu
+                        estancia</span>
+                    <h2 class="text-3xl md:text-5xl font-black mt-2 text-slate-900 dark:text-slate-100"
+                        data-i18n="avail_title">Reserva tu rincón en el paraíso</h2>
+                </div>
+
+                <div class="space-y-10">
+                    <!-- Top Section: Calendar (Full Width) -->
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-6 md:p-10 border border-primary/5">
+                        <div class="flex flex-col md:flex-row items-center justify-between mb-8 gap-6">
+                            <div class="flex items-center gap-4">
+                                <span class="bg-primary/10 text-primary p-3 rounded-2xl hidden md:flex">
+                                    <span class="material-icons">calendar_month</span>
+                                </span>
+                                <div class="text-center md:text-left">
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white" data-i18n="avail_subtitle">Selecciona tus fechas</h3>
+                                    <p class="text-xs text-slate-500" data-i18n="avail_hint">Mínimo 3 noches de reserva</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-center gap-6">
+                                <div class="flex items-center gap-2">
+                                    <button onclick="window.changeCalendarMonth(-1)"
+                                        class="p-2 hover:bg-primary/10 rounded-full transition-colors border border-slate-100 dark:border-slate-700">
+                                        <span class="material-icons text-slate-600 dark:text-slate-300">chevron_left</span>
+                                    </button>
+                                    <button onclick="window.changeCalendarMonth(1)"
+                                        class="p-2 hover:bg-primary/10 rounded-full transition-colors border border-slate-100 dark:border-slate-700">
+                                        <span class="material-icons text-slate-600 dark:text-slate-300">chevron_right</span>
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-4 text-[10px] md:text-xs font-bold uppercase tracking-wider text-slate-400">
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="w-3 h-3 rounded bg-red-100 border border-red-200"></div><span data-i18n="avail_full">Ocupado</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="w-3 h-3 rounded bg-primary shadow-sm border border-primary/20"></div><span data-i18n="avail_sel">Tu selección</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Grid -->
+                        <div id="calendar-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12">
+                            <!-- Calendars will be injected here -->
+                        </div>
+                    </div>
+
+                    <!-- Bottom Section: Form & Invoice (Side by Side) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        
+                        <!-- Form Area (Takes 7/12 width) -->
+                        <div class="lg:col-span-7 bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-8 border border-primary/5 relative overflow-hidden">
+                            <!-- Decorative bg element -->
+                            <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                            <div id="booking-success"
+                                class="hidden flex flex-col items-center text-center py-10 animate-in fade-in zoom-in duration-500">
+                                <div class="h-20 w-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6">
+                                    <span class="material-icons text-4xl">check_circle</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="form_success_title">¡Reserva Solicitada!</h3>
+                                <p class="text-slate-600 dark:text-slate-400" data-i18n="form_success_msg">Te redirigiremos en un momento o te enviaremos un email.</p>
+                                <button onclick="location.reload()" class="mt-8 text-primary font-bold hover:underline">Completar otra reserva</button>
+                            </div>
+                            
+                            <form id="booking-form" class="space-y-6 relative z-10">
+                                <h4 class="text-sm font-bold uppercase tracking-widest text-primary mb-4">Tus Datos Personales</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div class="space-y-2">
+                                                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500" data-i18n="form_checkin">Llegada</label>
+                                                <input id="checkin-input" readonly
+                                                    class="w-full rounded-xl border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:border-primary focus:ring-primary text-sm font-bold p-3.5 cursor-default text-slate-800 dark:text-white"
+                                                    type="text" placeholder="-- / -- / --">
+                                            </div>
+                                            <div class="space-y-2">
+                                                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500" data-i18n="form_checkout">Salida</label>
+                                                <input id="checkout-input" readonly
+                                                    class="w-full rounded-xl border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:border-primary focus:ring-primary text-sm font-bold p-3.5 cursor-default text-slate-800 dark:text-white"
+                                                    type="text" placeholder="-- / -- / --">
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500" data-i18n="form_name">Nombre y Apellidos</label>
+                                            <input id="form-name"
+                                                class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary p-3.5 text-sm transition-shadow hover:shadow-sm"
+                                                data-i18n-placeholder="form_name_placeholder" type="text" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-4">
+                                        <div class="space-y-2">
+                                            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500" data-i18n="form_email">Email</label>
+                                            <input id="form-email"
+                                                class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary p-3.5 text-sm transition-shadow hover:shadow-sm"
+                                                data-i18n-placeholder="form_email_placeholder" placeholder="hola@ejemplo.com"
+                                                type="email" required>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div class="space-y-2">
+                                                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500" data-i18n="form_phone">Teléfono</label>
+                                                <input id="form-phone"
+                                                    class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary p-3.5 text-sm transition-shadow hover:shadow-sm"
+                                                    data-i18n-placeholder="form_phone_placeholder" placeholder="+34 600..."
+                                                    type="tel" required>
+                                            </div>
+                                            <div class="space-y-2">
+                                                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500" data-i18n="form_guests">Huéspedes</label>
+                                                <select id="form-guests"
+                                                    class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary p-3.5 text-sm transition-shadow hover:shadow-sm cursor-pointer">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2 pt-2">
+                                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500" data-i18n="form_msg">Comentarios / Peticiones</label>
+                                    <textarea id="form-msg"
+                                        class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary p-3.5 text-sm transition-shadow hover:shadow-sm resize-none"
+                                        data-i18n-placeholder="form_msg_placeholder" rows="2"></textarea>
+                                </div>
+                                
+                                <div class="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl mt-4">
+                                    <span class="material-icons text-primary mt-0.5 text-lg">verified_user</span>
+                                    <p class="text-[11px] text-slate-500 leading-relaxed" data-i18n="form_disclaimer">
+                                        Tus datos están seguros. Al hacer clic en reservar serás redirigido a la pasarela de pago seguro integrada. 
+                                        Cancelación gratuita garantizada hasta 10 días antes de tu llegada.
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Invoice & Action Area (Takes 5/12 width) -->
+                        <div class="lg:col-span-5 flex flex-col gap-6 sticky top-28">
+                            
+                            <div id="price-summary" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500 flex flex-col gap-4">
+                                
+                                <!-- Payment Rules Cloud -->
+                                <div class="payment-cloud shadow-md border-primary/20 bg-blue-50/50 dark:bg-primary/5">
+                                    <div class="flex items-center gap-2 mb-1.5">
+                                        <span class="material-icons text-primary/80 text-base">security</span>
+                                        <span class="text-xs font-extrabold text-primary uppercase" data-i18n="price_deposit_label">Pago Escalonado</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-600 dark:text-slate-400 leading-snug font-medium" data-i18n="price_policy_note">
+                                        Para confirmar tu reserva, abona solo el <strong class="text-primary">30%</strong> ahora. 
+                                        El resto (70%) se cobrará <strong class="text-slate-900 dark:text-white">automáticamente 10 días antes</strong> de tu entrada.
+                                    </p>
+                                </div>
+
+                                <!-- Premium Invoice Card -->
+                                <div class="invoice-card shadow-2xl flex-1 flex flex-col border border-slate-200/60 dark:border-slate-700">
+                                    <div class="invoice-header bg-slate-900 dark:bg-slate-950 p-6 flex justify-between items-center relative overflow-hidden">
+                                        <div class="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4">
+                                            <span class="material-icons" style="font-size: 100px;">receipt_long</span>
+                                        </div>
+                                        <div class="relative z-10">
+                                            <h4 class="text-white text-base font-black tracking-wide" data-i18n="price_summary_title">Estado de Cuenta</h4>
+                                            <p class="text-slate-400 text-[10px] uppercase font-bold tracking-widest mt-1" data-i18n="price_summary_desc">Tasas incluidas <span class="mx-1">•</span> Casa Pastri</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="p-6 md:p-8 flex flex-col justify-between flex-1 bg-white dark:bg-slate-800">
+                                        <ul id="price-breakdown-list" class="space-y-4 text-sm border-b border-slate-100 dark:border-slate-700 pb-6 mb-6">
+                                            <!-- Items injected here by JS -->
+                                        </ul>
+
+                                        <div class="space-y-5">
+                                            <!-- Total -->
+                                            <div class="flex justify-between items-end">
+                                                <span class="text-xs font-bold uppercase text-slate-400" data-i18n="price_total_label">Precio Total Estancia</span>
+                                                <span id="total-price-value" class="text-2xl font-black text-slate-800 dark:text-white leading-none">0€</span>
+                                            </div>
+                                            
+                                            <!-- Deposit Box (Highlight) -->
+                                            <div class="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 relative">
+                                                <div class="absolute top-0 right-0 p-2 opacity-20">
+                                                    <span class="material-icons text-primary text-3xl">bolt</span>
+                                                </div>
+                                                <div class="flex justify-between items-center mb-1 relative z-10">
+                                                    <span class="text-xs font-black text-primary uppercase" data-i18n="price_deposit_label">A pagar hoy (30%)</span>
+                                                    <span id="deposit-amount-value" class="text-2xl font-black text-primary">0€</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Remaining amount -->
+                                            <div class="flex justify-between items-center px-2">
+                                                <span class="text-[10px] font-bold text-slate-400 uppercase" data-i18n="price_remaining_label">Pendiente (70%)</span>
+                                                <span id="remaining-amount-value" class="text-sm font-bold text-slate-500">0€</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button placed right under logic flow -->
+                            <div class="mt-2 w-full space-y-3">
+                                <div id="booking-error" class="hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
+                                    <div class="flex items-start gap-2 p-3 rounded-xl bg-red-50 text-red-600 border border-red-100">
+                                        <span class="material-icons text-sm mt-0.5">error</span>
+                                        <p id="booking-error-msg" class="text-xs font-bold leading-tight"></p>
+                                    </div>
+                                </div>
+                                <button form="booking-form" type="submit" class="w-full relative group overflow-hidden bg-slate-900 hover:bg-slate-800 dark:bg-primary dark:hover:bg-primary/90 text-white rounded-2xl p-5 shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98]">
+                                    <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                                    <div class="flex items-center justify-center gap-3 relative z-10">
+                                        <span class="material-icons text-xl">credit_score</span>
+                                        <span class="font-black text-lg tracking-wide uppercase" data-i18n="form_btn">Confirmar y Pagar</span>
+                                    </div>
+                                </button>
+                                <div class="flex justify-center gap-4 opacity-50 pt-2 text-slate-400">
+                                    <span class="material-icons text-lg">lock</span>
+                                    <span class="font-bold text-[10px] uppercase line-relaxed mt-0.5">Pagos Procesados por Stripe</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="bg-slate-900 text-white py-16">
+            <div class="max-w-7xl mx-auto px-6 md:px-10">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                    <div class="col-span-1 md:col-span-2">
+                        <div class="flex items-center gap-2 text-primary mb-6">
+                            <span class="material-icons text-3xl">sailing</span>
+                            <h2 class="text-2xl font-bold tracking-tight text-white">Casa Pastri</h2>
+                        </div>
+                        <p class="text-slate-400 max-w-sm mb-6 leading-relaxed" data-i18n="footer_desc">
+                            Tu casa lejos de casa en la joya escondida de las Islas Canarias. Calidad, confort y respeto
+                            por el entorno natural de La Graciosa.
+                        </p>
+                        <div class="flex gap-4">
+                            <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors text-white"
+                                href="https://www.instagram.com/casapastri/" target="_blank" rel="noopener noreferrer">
+                                <span class="material-icons">photo_camera</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-6" data-i18n="footer_nav_title">Navegación</h4>
+                        <ul class="space-y-4 text-slate-400">
+                            <li><a class="hover:text-white transition-colors" href="#inicio"
+                                    data-i18n="nav_home">Inicio</a></li>
+                            <li><a class="hover:text-white transition-colors" href="#servicios"
+                                    data-i18n="nav_services">Servicios</a></li>
+                            <li><a class="hover:text-white transition-colors" href="#galeria"
+                                    data-i18n="nav_gallery">Galería</a></li>
+                            <li><a class="hover:text-white transition-colors" href="#disponibilidad"
+                                    data-i18n="nav_availability">Disponibilidad</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-6" data-i18n="footer_legal_title">Legal</h4>
+                        <ul class="space-y-4 text-slate-400">
+                            <li><a class="hover:text-white transition-colors" href="#" data-i18n="footer_legal_1">Aviso
+                                    Legal</a></li>
+                            <li><a class="hover:text-white transition-colors" href="#"
+                                    data-i18n="footer_legal_2">Política de Privacidad</a></li>
+                            <li><a class="hover:text-white transition-colors" href="#"
+                                    data-i18n="footer_legal_3">Política de Cookies</a></li>
+                            <li class="text-xs text-slate-500 pt-2"><span data-i18n="footer_license">Licencia</span>:
+                                VV-35-3-0002715</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-slate-500 text-sm">
+                        © 2026 Casa Pastri. <span data-i18n="footer_copy">Todos los derechos reservados.</span>
+                    </p>
+                    <div class="flex items-center gap-2 text-slate-500 text-sm">
+                        <span class="material-icons text-sm">location_on</span>
+                        <span data-i18n="footer_loc">Caleta de Sebo, La Graciosa, España</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Lightbox Structure -->
+        <div id="lightbox" onclick="window.closeLightbox(event)"
+            class="fixed inset-0 z-[1000] bg-black/90 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 items-center justify-center">
+            <button
+                class="lightbox-btn lightbox-close absolute top-8 right-8 p-3 text-white hover:bg-white/10 rounded-full transition-all"
+                onclick="window.closeLightbox(event, true)">
+                <span class="material-icons">close</span>
+            </button>
+            <button
+                class="lightbox-btn lightbox-prev absolute left-8 top-1/2 -translate-y-1/2 p-3 text-white hover:bg-white/10 rounded-full transition-all md:block hidden"
+                onclick="window.changeLightboxSlide(-1, event)">
+                <span class="material-icons text-4xl">chevron_left</span>
+            </button>
+            <div class="max-w-[90%] max-h-[80vh] relative group">
+                <img id="lightbox-img" src="" alt="Vista ampliada"
+                    class="max-h-[80vh] rounded-xl shadow-2xl transform scale-95 transition-transform duration-300">
+            </div>
+            <button
+                class="lightbox-btn lightbox-next absolute right-8 top-1/2 -translate-y-1/2 p-3 text-white hover:bg-white/10 rounded-full transition-all md:block hidden"
+                onclick="window.changeLightboxSlide(1, event)">
+                <span class="material-icons text-4xl">chevron_right</span>
+            </button>
+
+            <!-- Mobile controls -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-8 md:hidden">
+                <button class="p-4 text-white hover:bg-white/10 rounded-full"
+                    onclick="window.changeLightboxSlide(-1, event)">
+                    <span class="material-icons text-4xl">chevron_left</span>
                 </button>
-</div>
-</header>
-<!-- Hero Section -->
-<section class="relative w-full px-4 md:px-10 py-6 md:py-10" id="inicio">
-<div class="max-w-7xl mx-auto">
-<div class="relative flex min-h-[600px] w-full flex-col items-center justify-center overflow-hidden rounded-xl bg-cover bg-center p-8 text-center" data-alt="Vista panorámica de una playa virgen de arena blanca y aguas turquesas en La Graciosa" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHiidQesFmNKlq9NKrgSta5eDa9H-5EP2LHuAw5ulJTXzvbEdB-W9R9Kioloi6bIEQgp4HEg7qitR6OYJfCPEj1LZ14ijDU-r-Yxiv-n5Fcfvlw2AwPC0w5qAXhHhA8hkWBZeI2ZPWUSZKnhixDeLr2z3FEWDznWG2CwHNr7JzjtRZkY9Qv5_aTbEqfRe_L_5cpfX1sMPyO531lAFlNHalDPpSuVqHdVhS84L79pOpt8qbGWpIEy-PB55gCXwhyVv7_8CcOigefHY');">
-<div class="max-w-3xl space-y-6">
-<h1 class="text-white text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
-                            Descubre el Paraíso en <span class="text-accent-sand">La Graciosa</span>
-</h1>
-<p class="text-slate-100 text-lg md:text-xl font-medium">
-                            Tu refugio exclusivo frente al mar en la isla más virgen de Canarias. Sin prisas, sin asfalto, solo tú y el océano.
-                        </p>
-<div class="pt-4">
-<button class="bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-xl text-lg font-bold transition-transform hover:scale-105 shadow-xl shadow-primary/30">
-                                Reserva Directa sin Comisiones
-                            </button>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Features Section -->
-<section class="py-20 px-6 md:px-20 bg-white dark:bg-slate-900/50" id="servicios">
-<div class="max-w-7xl mx-auto">
-<div class="mb-16 text-center md:text-left">
-<span class="text-primary font-bold uppercase tracking-widest text-sm">Tu estancia perfecta</span>
-<h2 class="text-3xl md:text-5xl font-black mt-2 text-slate-900 dark:text-slate-100">Comodidades de Ensueño</h2>
-<div class="h-1.5 w-24 bg-accent-sand mt-4 rounded-full"></div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-<!-- Feature 1 -->
-<div class="group p-8 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark hover:border-primary/40 transition-all hover:shadow-lg">
-<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-3xl">waves</span>
-</div>
-<h3 class="text-xl font-bold mb-3">Cerca del mar</h3>
-<p class="text-slate-600 dark:text-slate-400 leading-relaxed">A tan solo unos pasos de la arena dorada y el sonido relajante de las olas atlánticas.</p>
-</div>
-<!-- Feature 2 -->
-<div class="group p-8 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark hover:border-primary/40 transition-all hover:shadow-lg">
-<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-3xl">wb_sunny</span>
-</div>
-<h3 class="text-xl font-bold mb-3">Terraza privada</h3>
-<p class="text-slate-600 dark:text-slate-400 leading-relaxed">Disfruta de atardeceres inolvidables y cenas bajo las estrellas en tu propio espacio exterior.</p>
-</div>
-<!-- Feature 3 -->
-<div class="group p-8 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark hover:border-primary/40 transition-all hover:shadow-lg">
-<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-3xl">wifi</span>
-</div>
-<h3 class="text-xl font-bold mb-3">Wifi alta velocidad</h3>
-<p class="text-slate-600 dark:text-slate-400 leading-relaxed">Conexión ultrarrápida ideal para nómadas digitales o para compartir tus mejores momentos.</p>
-</div>
-</div>
-</div>
-</section>
-<!-- Gallery Section -->
-<section class="py-20 px-6 md:px-20" id="galeria">
-<div class="max-w-7xl mx-auto">
-<div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
-<div>
-<span class="text-primary font-bold uppercase tracking-widest text-sm">Galería</span>
-<h2 class="text-3xl md:text-5xl font-black mt-2">Un vistazo al paraíso</h2>
-</div>
-<p class="text-slate-600 dark:text-slate-400 max-w-md">
-                        Explora los rincones de nuestro apartamento y la belleza natural que rodea la octava isla de Canarias.
-                    </p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[200px]">
-<div class="md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Salón moderno del apartamento con decoración playera en tonos blancos y azules" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABUnQPTos94GUCXlzN0Wgyh3kJf3TOK-qAyujMWE-8KvG-UGjKlwF0EwI6GxZv2umHdzhLvLLy5baeW9t9gZZfvwbY5-_icyDwZ1pOBKdlJnwWCuFXDecF0FOSJA5VH5YHy4eqjcH3ysFqDwbbt6y2XqdtgE4Kv-6J6J9MxitYEaZ0ZoUqiIVKaWkS9Ns7uwumVywWF1ee4yh-A_BZj9kM3PiP4jJLGYOVaOmZOE9136KjzcfJK9K3mZKpVsLyw6w3Ybx_f3Hi3qs');"></div>
-<div class="rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Dormitorio principal luminoso con vistas parciales al mar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAfNoESdSGT71LxVFbkvywlj6JmFMFA5uo-6Zm3KW2kaJBTkya7rS42n0LWHh21jAVR0g9TAEJNwD_0jeM7HZgdu8lElSg32QuF929k9G8A5fiUDNEUARKQ5I4IzOGnDvVkDsjBPR--D1pOwry4wbao6-G9xqnm8EgGFX_XSWxh8OqDdd2Q4rwuIjhpB-NBVFBdp_SMWvW7O5lWfV3803-Jd9jBMS7NYULAWssaCi4kXTrXbhFewo_JfZH7w6nxybc6qzXMjynqI7Y');"></div>
-<div class="rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Terraza exterior con hamacas y mesa para desayunar al sol" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCccyXhKPP-SYa1KpMB6Mqt2uaHN78mnYfiblrcRQ4GFaFD2CZgS2ALSTOgPtEvys_wiA65TiuyBoNzgmSBuJwUONHhtAc0xwOb8AGwB9xE1wtyxea-x9an7Xu_VeLEpEp3FKySlncL5vFqWRjEqlPu4D7PNuAxgBtm6X5Ll-PpGypYYsk2UnReBY0wt-PJCXQwWeD3KA7Er9cSrW30r8b4P_3g8sWjT3vGsoJN-iEaxUGPLSFltHsOBFdX1lK6mWKZZQCIlsJ66uA');"></div>
-<div class="md:col-span-2 rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Paisaje de los volcanes y playas vírgenes de La Graciosa" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC-3sXvWBanuQ-7bDOgGm17Ajuh2s9zb0pS4I8ud47KeA4zEcv8nriHbAPy6kKWcuPFdTOO9ZMa83o5HQu61I9HrkQ2tkZwWfWu5xh5a5k6sLROW2o0h8TLCCW7QRBpm2J2aLtpDtpxhtBwYEvKYxpamks_Weo8z_qvFBeFThV3UZrn8_GpU0HHXJJ80lxpn8f5_AnRpQEOY8Qoa44B9GbGnFKcParNWpqHKfW5kTLkE2enidMIjMBaYAgOuQ6e7v0hfiFAGrHzNyg');"></div>
-<div class="rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Cocina totalmente equipada con acabados modernos" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDD6iRE8CX5jCXrvzveFlJ_d25Rb3KyRB7l69VxIdq7uhZOgGUAPn6KioK70Wu5xyRfiaAZDSa6RTBmNhXsJrYOv6dGT3-nYwPS0oSJ-3yOMozlIk7gK4RQmj1nD-W1PRltR2FJ2H1Vj46wCSocpHhFFC-q7GpavHEm6An-h7bxSNMz2FbU2qsSVwpu_G5HmEUibtMDZyHMrStiAZDCWU0Gq4SjpoXa-isD_bTdmGi24Rn_dhAFq54S_JqL-Rs19yJlTt4y0eyWZWs');"></div>
-<div class="rounded-2xl overflow-hidden bg-cover bg-center" data-alt="Detalle de la decoración artesanal inspirada en el océano" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBtqC_v8IbRnnVT1FGqMbYz4JFYZUUUm96RPAf11mL7vybdgO2uDubyoQneAyVJ6_ukQn7Au1_4afj3e4U78FETuCZM0MSZ_lQGyxb-EswXaFJE9NDo8qF_PQsCkfX_1EHkFl5p9w3rUppeHr1EJy6EUoLdSL3IztNiJS293uPwc8PkzUMVu-cxRkVEORoN4nKARpkYUk3jZDlB8cjViwGFUMJi4Y2zQOxrJ76CAfVhigQuAXV_N0x2RpbbZoqVLJNx6ogDXflSh7s');"></div>
-</div>
-</div>
-</section>
-<!-- Booking Section -->
-<section class="py-20 px-6 md:px-20 bg-primary/5" id="contacto">
-<div class="max-w-7xl mx-auto">
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-<div>
-<h2 class="text-4xl md:text-5xl font-black mb-6">Tu escapada comienza aquí</h2>
-<p class="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-                            Reserva directamente con nosotros para obtener el mejor precio garantizado. Sin intermediarios, sin comisiones ocultas, solo trato directo y cercano.
-                        </p>
-<ul class="space-y-4 mb-10">
-<li class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary">check_circle</span>
-<span class="font-medium">Confirmación inmediata</span>
-</li>
-<li class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary">check_circle</span>
-<span class="font-medium">Política de cancelación flexible</span>
-</li>
-<li class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary">check_circle</span>
-<span class="font-medium">Atención personalizada 24/7</span>
-</li>
-</ul>
-<div class="flex items-center gap-4 p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">
-<div class="size-12 bg-accent-sand rounded-full flex items-center justify-center text-slate-900">
-<span class="material-symbols-outlined">map</span>
-</div>
-<div>
-<p class="text-sm text-slate-500">Ubicación</p>
-<p class="font-bold">Caleta de Sebo, La Graciosa</p>
-</div>
-</div>
-</div>
-<div class="bg-white dark:bg-slate-900 p-8 md:p-10 rounded-3xl shadow-xl shadow-primary/10">
-<form class="space-y-5">
-<div class="grid grid-cols-2 gap-4">
-<div class="space-y-2">
-<label class="text-sm font-semibold">Entrada</label>
-<input class="w-full rounded-lg border-primary/20 bg-background-light dark:bg-background-dark focus:border-primary focus:ring-primary" type="date"/>
-</div>
-<div class="space-y-2">
-<label class="text-sm font-semibold">Salida</label>
-<input class="w-full rounded-lg border-primary/20 bg-background-light dark:bg-background-dark focus:border-primary focus:ring-primary" type="date"/>
-</div>
-</div>
-<div class="space-y-2">
-<label class="text-sm font-semibold">Nombre completo</label>
-<input class="w-full rounded-lg border-primary/20 bg-background-light dark:bg-background-dark focus:border-primary focus:ring-primary" placeholder="Ej. Juan Pérez" type="text"/>
-</div>
-<div class="space-y-2">
-<label class="text-sm font-semibold">Email</label>
-<input class="w-full rounded-lg border-primary/20 bg-background-light dark:bg-background-dark focus:border-primary focus:ring-primary" placeholder="hola@ejemplo.com" type="email"/>
-</div>
-<div class="space-y-2">
-<label class="text-sm font-semibold">Mensaje (opcional)</label>
-<textarea class="w-full rounded-lg border-primary/20 bg-background-light dark:bg-background-dark focus:border-primary focus:ring-primary" placeholder="¿Alguna petición especial?" rows="3"></textarea>
-</div>
-<button class="w-full bg-primary hover:bg-primary/90 text-white py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-primary/20 mt-4" type="submit">
-                                Solicitar Reserva
-                            </button>
-<p class="text-center text-xs text-slate-400 mt-4">
-                                Al solicitar la reserva aceptas nuestra política de privacidad. Te responderemos en menos de 12h.
-                            </p>
-</form>
-</div>
-</div>
-</div>
-</section>
-<!-- Footer -->
-<footer class="bg-slate-900 text-white py-16 px-6 md:px-20">
-<div class="max-w-7xl mx-auto">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-<div class="col-span-1 md:col-span-2">
-<div class="flex items-center gap-2 text-primary mb-6">
-<span class="material-symbols-outlined text-3xl">sailing</span>
-<h2 class="text-2xl font-bold tracking-tight text-white">Graciosa Haven</h2>
-</div>
-<p class="text-slate-400 max-w-sm mb-6 leading-relaxed">
-                            Tu casa lejos de casa en la joya escondida de las Islas Canarias. Calidad, confort y respeto por el entorno natural de La Graciosa.
-                        </p>
-<div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#">
-<span class="material-symbols-outlined">share</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#">
-<span class="material-symbols-outlined">photo_camera</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#">
-<span class="material-symbols-outlined">alternate_email</span>
-</a>
-</div>
-</div>
-<div>
-<h4 class="font-bold text-lg mb-6">Navegación</h4>
-<ul class="space-y-4 text-slate-400">
-<li><a class="hover:text-white transition-colors" href="#">Inicio</a></li>
-<li><a class="hover:text-white transition-colors" href="#">Servicios</a></li>
-<li><a class="hover:text-white transition-colors" href="#">Galería</a></li>
-<li><a class="hover:text-white transition-colors" href="#">Tarifas</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-bold text-lg mb-6">Legal</h4>
-<ul class="space-y-4 text-slate-400">
-<li><a class="hover:text-white transition-colors" href="#">Aviso Legal</a></li>
-<li><a class="hover:text-white transition-colors" href="#">Política de Privacidad</a></li>
-<li><a class="hover:text-white transition-colors" href="#">Política de Cookies</a></li>
-<li><a class="hover:text-white transition-colors" href="#">Licencia: VV-35-12345</a></li>
-</ul>
-</div>
-</div>
-<div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-<p class="text-slate-500 text-sm">
-                        © 2024 Graciosa Haven. Todos los derechos reservados.
-                    </p>
-<div class="flex items-center gap-2 text-slate-500 text-sm">
-<span class="material-symbols-outlined text-sm">location_on</span>
-<span>Caleta de Sebo, La Graciosa, España</span>
-</div>
-</div>
-</div>
-</footer>
-</div>
-</body></html>
+                <button class="p-4 text-white hover:bg-white/10 rounded-full"
+                    onclick="window.changeLightboxSlide(1, event)">
+                    <span class="material-icons text-4xl">chevron_right</span>
+                </button>
+            </div>
+        </div>
+
+        <script>
+                (function () {
+                    // --- Global Translations ---
+                    const translations = {
+                        'es': {
+                            'nav_home': 'Inicio', 'nav_services': 'Servicios', 'nav_gallery': 'Galería', 'nav_availability': 'Disponibilidad', 'nav_contact': 'Contacto',
+                            'btn_book_now': 'Reserva Ahora',
+                            'hero_title_1': 'Despierta donde el', 'hero_title_2': 'tiempo se detiene',
+                            'hero_description': 'En La Graciosa no hay asfalto ni prisas. Solo el sonido del viento, el mar y una casa sencilla pensada para quienes buscan el lujo de no hacer nada.',
+                            'hero_cta': 'Mira si tenemos sitio para ti',
+                            'feat_tag': 'Vivir la octava isla', 'feat_title': 'Donde el silencio es el protagonista',
+                            'feat_description': 'La Graciosa es un refugio de calles de arena y barcos de pesca. Aquí no vienes a ver museos, vienes a vivir el ritmo de la marea. En Casa Pastri te ofrecemos la base perfecta: cómoda, honesta y pensada para que te sientas un graciosero más.',
+                            'feat_1_title': 'La orilla a 5 minutos', 'feat_1_desc': 'Lo suficientemente cerca para ir descalzo, lo suficientemente lejos para dormir en calma absoluta.',
+                            'feat_2_title': 'Tu café con brisa', 'feat_2_desc': 'Un patio exterior con mesa y sillas para ver cómo despierta el pueblo antes de que el sol caliente la arena.',
+                            'feat_3_title': 'Desconexión real', 'feat_3_desc': 'Tenemos wifi, claro. Pero nuestro mejor ancho de banda es el silencio que rodea la casa cada noche.',
+                            'gall_tag': 'La Casa', 'gall_title': 'Tu refugio en la arena…', 'gall_desc': 'Dos habitaciones, cocina equipada y todo lo que realmente necesitas (y nada de lo que te sobra).',
+                            'book_title': '¿Buscas un respiro?', 'book_desc': 'Casa Pastri tiene espacio para 4 personas y la honestidad de una casa graciosera de verdad. Cuéntanos cuándo planeas venir y te ayudaremos a organizar tu llegada con el ferry desde Órzola.',
+                            'book_feat_1': 'Confirmación inmediata', 'book_feat_2': 'Política de cancelación flexible', 'book_feat_3': 'Atención personalizada 24/7',
+                            'book_loc_label': 'Ubicación', 'book_loc_val': 'Caleta de Sebo, La Graciosa',
+                            'form_checkin': 'Entrada', 'form_checkout': 'Salida', 'form_name': 'Nombre completo',
+                            'form_name_placeholder': 'Ej. Juan Pérez', 'form_email': 'Email', 'form_email_placeholder': 'hola@ejemplo.com', 'form_phone': 'Teléfono', 'form_phone_placeholder': '+34 600 000 000', 'form_guests': 'Huéspedes', 'form_msg': 'Mensaje (opcional)', 'form_msg_placeholder': '¿Alguna petición especial?',
+                            'form_btn': 'Solicitar Reserva', 'form_disclaimer': 'Al solicitar la reserva aceptas nuestra política de privacidad. Te responderemos en menos de 12h…',
+                            'form_success_title': '¡Reserva Solicitada!', 'form_success_msg': 'Hemos recibido tu solicitud. Te responderemos por email en menos de 12 horas.',
+                            'price_cancellation_policy': 'Cancelación gratuita hasta 10 días antes de la llegada.',
+                            'price_cleaning_included': 'Tarifa de limpieza (76€) incluida en el precio total.',
+                            'error_min_stay': 'La estancia mínima es de 3 noches.',
+                            'error_advance_booking': 'Las reservas deben hacerse con al menos 2 días de antelación.',
+                            'footer_desc': 'Tu casa lejos de casa en la joya escondida de las Islas Canarias. Calidad, confort y respeto por el entorno natural de La Graciosa.',
+                            'footer_nav_title': 'Navegación', 'footer_legal_title': 'Legal',
+                            'footer_legal_1': 'Aviso Legal', 'footer_legal_2': 'Política de Privacidad', 'footer_legal_3': 'Política de Cookies',
+                            'footer_license': 'Licencia', 'footer_copy': 'Todos los derechos reservados.', 'footer_loc': 'Caleta de Sebo, La Graciosa, España'
+                        },
+                        'en': {
+                            'nav_home': 'Home', 'nav_services': 'Experience', 'nav_gallery': 'Gallery', 'nav_availability': 'Availability', 'nav_contact': 'Contact',
+                            'btn_book_now': 'Book Now',
+                            'hero_title_1': 'Wake up where', 'hero_title_2': 'time stands still',
+                            'hero_description': 'On La Graciosa, there is no asphalt or rush. Just the sound of the breeze, the waves, and a simple home designed for those seeking the luxury of doing absolutely nothing.',
+                            'hero_cta': 'See if we have a spot for you',
+                            'feat_tag': 'Live the eighth island', 'feat_title': 'Where silence takes center stage',
+                            'feat_description': 'La Graciosa is a sanctuary of sandy streets and fishing boats. You don’t come here for museums; you come to live by the rhythm of the tides. In Casa Pastri, we offer the perfect base: comfortable, honest, and crafted to make you feel like a true islander.',
+                            'feat_1_title': '5 minutes to the shore', 'feat_1_desc': 'Close enough to walk barefoot, far enough to sleep in absolute stillness.',
+                            'feat_2_title': 'Coffee with a breeze', 'feat_2_desc': 'An outdoor terrace with table and chairs to watch the village wake up before the sun warms the sand.',
+                            'feat_3_title': 'True disconnection', 'feat_3_desc': 'We have wifi, of course. But our best bandwidth is the profound silence that wraps the house every night.',
+                            'gall_tag': 'The House', 'gall_title': 'Your refuge in the sand…', 'gall_desc': 'Two bedrooms, fully equipped kitchen, and everything you really need (and nothing you don’t).',
+                            'book_title': 'Need a breather?', 'book_desc': 'Casa Pastri hosts up to 4 people with the honesty of a real Graciosera home. Let us know when you’re coming, and we’ll help arrange your arrival via ferry from Orzola.',
+                            'book_feat_1': 'Immediate confirmation', 'book_feat_2': 'Flexible cancellation', 'book_feat_3': 'Personal 24/7 assistance',
+                            'book_loc_label': 'Location', 'book_loc_val': 'Caleta de Sebo, La Graciosa',
+                            'form_checkin': 'Check-in', 'form_checkout': 'Check-out', 'form_name': 'Full Name',
+                            'form_name_placeholder': 'e.g., John Doe', 'form_email': 'Email', 'form_email_placeholder': 'hello@example.com', 'form_phone': 'Phone', 'form_phone_placeholder': '+34 600 000 000', 'form_guests': 'Guests', 'form_msg': 'Message (optional)', 'form_msg_placeholder': 'Any special requests?',
+                            'form_btn': 'Request Booking', 'form_disclaimer': 'By requesting a booking, you agree to our privacy policy. We will reply within 12 hours…',
+                            'form_success_title': 'Booking Requested!', 'form_success_msg': 'We have received your request. We will reply via email within 12 hours.',
+                            'price_cancellation_policy': 'Free cancellation up to 10 days before arrival.',
+                            'price_cleaning_included': 'Cleaning fee (76€) included in the total price.',
+                            'error_min_stay': 'The minimum stay is 3 nights.',
+                            'error_advance_booking': 'Bookings must be made at least 2 days in advance.',
+                            'footer_desc': 'Your home away from home in the hidden gem of the Canary Islands. Quality, comfort, and respect for the natural spirit of La Graciosa.',
+                            'footer_nav_title': 'Navigation', 'footer_legal_title': 'Legal',
+                            'footer_legal_1': 'Legal Notice', 'footer_legal_2': 'Privacy Policy', 'footer_legal_3': 'Cookie Policy',
+                            'footer_license': 'License', 'footer_copy': 'All rights reserved.', 'footer_loc': 'Caleta de Sebo, La Graciosa, Spain'
+                        },
+                        'de': {
+                            'nav_home': 'Startseite', 'nav_services': 'Erlebnis', 'nav_gallery': 'Galerie', 'nav_availability': 'Verfügbarkeit', 'nav_contact': 'Kontakt',
+                            'btn_book_now': 'Jetzt Buchen',
+                            'hero_title_1': 'Wach auf, wo die', 'hero_title_2': 'Zeit stillsteht',
+                            'hero_description': 'Auf La Graciosa gibt es keinen Asphalt und keine Eile. Nur das Rauschen des Windes, das Meer und ein schlichtes Zuhause für alle, die den Luxus des Nichtstuns suchen.',
+                            'hero_cta': 'Schau, ob wir Platz für dich haben',
+                            'feat_tag': 'Die achte Insel leben', 'feat_title': 'Wo die Stille die Hauptrolle spielt',
+                            'feat_description': 'La Graciosa ist ein Rückzugsort mit Sandstraßen und Fischerbooten. Hierher kommt man nicht für Museen, sondern um den Rhythmus der Gezeiten zu spüren. Im Casa Pastri bieten wir dir das perfekte Zuhause: gemütlich, ehrlich und so gedacht, dass du dich wie ein echter Graciosero fühlst.',
+                            'feat_1_title': '5 Minuten bis zum Ufer', 'feat_1_desc': 'Nah genug, um barfuß zu gehen, weit genug, um in absoluter Ruhe zu schlafen.',
+                            'feat_2_title': 'Kaffee mit Meeresbrise', 'feat_2_desc': 'Ein Außenbereich mit Tisch und Stühlen, um dem Dorf beim Erwachen zuzusehen, bevor die Sonne den Sand erwärmt.',
+                            'feat_3_title': 'Echte Entschleunigung', 'feat_3_desc': 'Wir haben WLAN, natürlich. Aber unsere beste Bandbreite ist die tiefe Stille, die das Haus jede Nacht umgibt.',
+                            'gall_tag': 'Das Haus', 'gall_title': 'Dein Refugium im Sand…', 'gall_desc': 'Zwei Schlafzimmer, ausgestattete Küche und alles, was du wirklich brauchst (und nichts von dem, was du nicht brauchst).',
+                            'book_title': 'Brauchst du eine Pause?', 'book_desc': 'Casa Pastri bietet Platz für 4 Personen und die Ehrlichkeit eines echten Inselhauses. Sag uns, wann du kommen möchtest, und wir helfen dir bei der Anreise con der Fähre von Orzola.',
+                            'book_feat_1': 'Sofortige Bestätigung', 'book_feat_2': 'Flexible Stornierung', 'book_feat_3': 'Persönliche Betreuung 24/7',
+                            'book_loc_label': 'Standort', 'book_loc_val': 'Caleta de Sebo, La Graciosa',
+                            'form_checkin': 'Anreise', 'form_checkout': 'Abreise', 'form_name': 'Vollständiger Name',
+                            'form_name_placeholder': 'z.B. Max Mustermann', 'form_email': 'E-Mail', 'form_email_placeholder': 'hallo@beispiel.de', 'form_phone': 'Telefon', 'form_phone_placeholder': '+34 600 000 000', 'form_guests': 'Gäste', 'form_msg': 'Nachricht (optional)', 'form_msg_placeholder': 'Besondere Wünsche?',
+                            'form_btn': 'Buchung anfragen', 'form_disclaimer': 'Mit der Anfrage akzeptieren Sie unsere Datenschutzbestimmungen. Wir antworten in weniger als 12 Stunden…',
+                            'form_success_title': 'Buchung angefragt!', 'form_success_msg': 'Wir haben Ihre Anfrage erhalten. Wir antworten Ihnen per E-Mail in weniger als 12 Stunden.',
+                            'price_cancellation_policy': 'Kostenlose Stornierung bis zu 10 Tage vor der Ankunft.',
+                            'price_cleaning_included': 'Reinigungsgebühr (76€) im Gesamtpreis enthalten.',
+                            'error_min_stay': 'Der Mindestaufenthalt beträgt 3 Nächte.',
+                            'error_advance_booking': 'Buchungen müssen mindestens 2 Tage im Voraus erfolgen.',
+                            'footer_desc': 'Dein zweites Zuhause im verborgenen Juwel der Kanaren. Qualität, Komfort und Respekt vor der Natur von La Graciosa.',
+                            'footer_nav_title': 'Navigation', 'footer_legal_title': 'Rechtliches',
+                            'footer_legal_1': 'Impressum', 'footer_legal_2': 'Datenschutz', 'footer_legal_3': 'Cookies',
+                            'footer_license': 'Lizenz', 'footer_copy': 'Alle Rechte vorbehalten.', 'footer_loc': 'Caleta de Sebo, La Graciosa, Spanien'
+                        },
+                        'fr': {
+                            'nav_home': 'Accueil', 'nav_services': 'Évasion', 'nav_gallery': 'Galerie', 'nav_availability': 'Disponibilité', 'nav_contact': 'Réserver',
+                            'btn_book_now': 'Réserver',
+                            'hero_title_1': 'Réveillez-vous là où le', 'hero_title_2': 'temps s’arrête',
+                            'hero_description': 'À La Graciosa, pas d’asphalte ni de précipitation. Juste le souffle du vent, la mer et une maison simple pensée pour ceux qui cherchent le luxe de ne rien faire.',
+                            'hero_cta': 'Vérifiez nos disponibilités',
+                            'feat_tag': 'Vivre la huitième île', 'feat_title': 'Où le silence est le protagoniste',
+                            'feat_description': 'La Graciosa est un refuge de rues sablonneuses et de bateaux de pêche. On ne vient pas ici pour les musées, mais pour vivre au rythme des marées. Chez Casa Pastri, nous vous offrons le refuge idéal : confortable, authentique et conçu pour que vous vous sentiez comme un habitant de l’île.',
+                            'feat_1_title': 'Le rivage à 5 minutes', 'feat_1_desc': 'Assez proche pour marcher pieds nus, assez loin pour dormir dans un calme absolu.',
+                            'feat_2_title': 'Votre café con brise', 'feat_2_desc': 'Une terrasse extérieure avec table et chaises pour regarder le village s’éveiller avant que le soleil ne chauffe le sable.',
+                            'feat_3_title': 'Déconnexion réelle', 'feat_3_desc': 'Nous avons le wifi, bien sûr. Mais notre meilleure bande passante est le silence profond qui enveloppe la maison chaque nuit.',
+                            'gall_tag': 'La Maison', 'gall_title': 'Votre refuge dans le sable…', 'gall_desc': 'Deux chambres, cuisine équipée et tout ce dont vous avez vraiment besoin (et rien de superflu).',
+                            'book_title': 'Besoin d’un souffle ?', 'book_desc': 'Casa Pastri peut accueillir 4 personnes with the honesty of a real Graciosera home. Dites-nous quand vous prévoyez de venir, nous vous aiderons à organiser votre arrivée avec le ferry depuis Orzola.',
+                            'book_feat_1': 'Confirmation immédiate', 'book_feat_2': 'Annulation flexible', 'book_feat_3': 'Assistance personnalisée 24/7',
+                            'book_loc_label': 'Emplacement', 'book_loc_val': 'Caleta de Sebo, La Graciosa',
+                            'form_checkin': 'Arrivée', 'form_checkout': 'Départ', 'form_name': 'Nom complet',
+                            'form_name_placeholder': 'Ex. Jean Dupont', 'form_email': 'E-mail', 'form_email_placeholder': 'bonjour@exemple.fr', 'form_phone': 'Téléphone', 'form_phone_placeholder': '+34 600 000 000', 'form_guests': 'Voyageurs', 'form_msg': 'Message (optionnel)', 'form_msg_placeholder': 'Des demandes particulières ?',
+                            'form_btn': 'Demander une réservation', 'form_disclaimer': 'En demandant une réservation, vous acceptez notre política de confidentialité. Réponse sous 12h…',
+                            'form_success_title': 'Réservation demandée !', 'form_success_msg': 'Nous avons bien reçu votre demande. Nous vous répondrons par e-mail sous 12 heures.',
+                            'price_cancellation_policy': 'Annulation gratuite jusqu’à 10 jours avant l’arrivée.',
+                            'price_cleaning_included': 'Frais de ménage (76€) inclus dans le prix total.',
+                            'error_min_stay': 'Le séjour minimum est de 3 nuits.',
+                            'error_advance_booking': 'Les réservations doivent être effectuées au moins 2 jours à l’avance.',
+                            'footer_desc': 'Votre chez-vous loin de chez vous dans le joyau caché des Canaries. Qualité, confort et respect de l’esprit naturel de La Graciosa.',
+                            'footer_nav_title': 'Navigation', 'footer_legal_title': 'Légal',
+                            'footer_legal_1': 'Mentions Légales', 'footer_legal_2': 'Confidentialité', 'footer_legal_3': 'Cookies',
+                            'footer_license': 'Licencia', 'footer_copy': 'Tous droits réservés.', 'footer_loc': 'Caleta de Sebo, La Graciosa, Espagne'
+                        }
+                    };
+
+                    const translationsExtensions = {
+                        'es': {
+                            'avail_tag': 'Disponibilidad', 'avail_title': 'Planea tu estancia',
+                            'avail_free': 'Disponible', 'avail_full': 'Reservado', 'avail_sel': 'Selección',
+                            'month_0': 'Enero', 'month_1': 'Febrero', 'month_2': 'Marzo', 'month_3': 'Abril', 'month_4': 'Mayo', 'month_5': 'Junio', 'month_6': 'Julio', 'month_7': 'Agosto', 'month_8': 'Septiembre', 'month_9': 'Octubre', 'month_10': 'Noviembre', 'month_11': 'Diciembre',
+                            'day_0': 'Do', 'day_1': 'Lu', 'day_2': 'Ma', 'day_3': 'Mi', 'day_4': 'Ju', 'day_5': 'Vi', 'day_6': 'Sa'
+                        },
+                        'en': {
+                            'avail_tag': 'Availability', 'avail_title': 'Plan your stay',
+                            'avail_free': 'Available', 'avail_full': 'Booked', 'avail_sel': 'Selected',
+                            'month_0': 'January', 'month_1': 'February', 'month_2': 'March', 'month_3': 'April', 'month_4': 'May', 'month_5': 'June', 'month_6': 'July', 'month_7': 'August', 'month_8': 'September', 'month_9': 'October', 'month_10': 'November', 'month_11': 'December',
+                            'day_0': 'Su', 'day_1': 'Mo', 'day_2': 'Tu', 'day_3': 'We', 'day_4': 'Th', 'day_5': 'Fr', 'day_6': 'Sa'
+                        },
+                        'de': {
+                            'avail_tag': 'Verfügbarkeit', 'avail_title': 'Planen Sie Ihren Aufenthalt',
+                            'avail_free': 'Verfügbar', 'avail_full': 'Belegt', 'avail_sel': 'Ausgewählt',
+                            'month_0': 'Januar', 'month_1': 'Februar', 'month_2': 'März', 'month_3': 'April', 'month_4': 'Mai', 'month_5': 'Juni', 'month_6': 'Juli', 'month_7': 'August', 'month_8': 'September', 'month_9': 'Oktober', 'month_10': 'November', 'month_11': 'Dezember',
+                            'day_0': 'So', 'day_1': 'Mo', 'day_2': 'Di', 'day_3': 'Mi', 'day_4': 'Do', 'day_5': 'Fr', 'day_6': 'Sa'
+                        },
+                        'fr': {
+                            'avail_tag': 'Disponibilité', 'avail_title': 'Planifiez votre séjour',
+                            'avail_free': 'Disponible', 'avail_full': 'Réservé', 'avail_sel': 'Sélection',
+                            'month_0': 'Janvier', 'month_1': 'Février', 'month_2': 'Mars', 'month_3': 'Avril', 'month_4': 'Mai', 'month_5': 'Juin', 'month_6': 'Juillet', 'month_7': 'Août', 'month_8': 'Septembre', 'month_9': 'Octobre', 'month_10': 'Novembre', 'month_11': 'Décembre',
+                            'day_0': 'Di', 'day_1': 'Lu', 'day_2': 'Ma', 'day_3': 'Me', 'day_4': 'Je', 'day_5': 'Ve', 'day_6': 'Sa'
+                        }
+                    };
+
+                    const pricingTranslations = {
+                        'es': {
+                            'price_summary_title': 'Resumen de tu estancia', 'price_summary_desc': 'Estos precios incluyen todas las tasas e impuestos.',
+                            'price_total_label': 'Total presupuesto', 'price_night': 'noche', 'price_nights': 'noches', 'price_weekend': 'Suplemento fin de semana', 'price_holiday': 'Tarifa festivo',
+                            'price_deposit_label': 'Pagar ahora (30% señal)', 'price_remaining_label': 'Pago pendiente (70%)',
+                            'price_policy_note': 'El 70% restante se cobrará automáticamente 10 días antes del check-in. IMPORTANTE: En caso de que el cobro automático falle, la reserva será cancelada y se perderá la señal del 30%.'
+                        },
+                        'en': {
+                            'price_summary_title': 'Your stay summary', 'price_summary_desc': 'These prices include all taxes and fees.',
+                            'price_total_label': 'Total budget', 'price_night': 'night', 'price_nights': 'nights', 'price_weekend': 'Weekend surcharge', 'price_holiday': 'Holiday rate',
+                            'price_deposit_label': 'Pay now (30% deposit)', 'price_remaining_label': 'Pending balance (70%)',
+                            'price_policy_note': 'The remaining 70% will be charged automatically 10 days before check-in. IMPORTANT: If the automatic payment fails, the booking will be cancelled and the 30% deposit will be forfeited.'
+                        },
+                        'de': {
+                            'price_summary_title': 'Ihre Aufenthaltszusammenfassung', 'price_summary_desc': 'Diese Preise enthalten alle Steuern und Gebühren.',
+                            'price_total_label': 'Gesamtbudget', 'price_night': 'Nacht', 'price_nights': 'Nächte', 'price_weekend': 'Wochenendzuschlag', 'price_holiday': 'Ferientarif',
+                            'price_deposit_label': 'Jetzt zahlen (30% Anzahlung)', 'price_remaining_label': 'Restbetrag (70%)',
+                            'price_policy_note': 'Die restlichen 70% werden 10 Tage vor dem Check-in automatisch abgebucht. WICHTIG: Sollte die automatische Zahlung fehlschlagen, wird die Buchung storniert und die 30% Anzahlung verfällt.'
+                        },
+                        'fr': {
+                            'price_summary_title': 'Résumé de votre séjour', 'price_summary_desc': 'Ces prix incluent toutes les taxes et frais.',
+                            'price_total_label': 'Budget total', 'price_night': 'nuit', 'price_nights': 'nuits', 'price_weekend': 'Supplément week-end', 'price_holiday': 'Tarif jour férié',
+                            'price_deposit_label': 'Payer maintenant (acompte 30%)', 'price_remaining_label': 'Solde restant (70%)',
+                            'price_policy_note': 'Les 70% restants seront prélevés automatiquement 10 jours avant l\'arrivée. IMPORTANT : En cas d\'échec du paiement automatique, la réservation sera annulée et l\'acompte de 30% sera perdu.'
+                        }
+                    };
+
+
+
+                    Object.keys(translations).forEach(lang => {
+                        Object.assign(translations[lang], translationsExtensions[lang]);
+                        Object.assign(translations[lang], pricingTranslations[lang]);
+                    });
+
+                    const flags = { 'es': '🇪🇸', 'en': '🇬🇧', 'de': '🇩🇪', 'fr': '🇫🇷' };
+
+                    // --- Global Functions ---
+                    window.setLanguage = function (lang) {
+                        const flagEl = document.getElementById('current-lang-flag');
+                        const codeEl = document.getElementById('current-lang-code');
+                        if (flagEl) flagEl.textContent = flags[lang];
+                        if (codeEl) codeEl.textContent = lang;
+
+                        const contentElements = document.querySelectorAll('.content-fade');
+                        contentElements.forEach(el => el.classList.add('opacity-0'));
+
+                        setTimeout(() => {
+                            document.querySelectorAll('[data-i18n]').forEach(el => {
+                                const key = el.getAttribute('data-i18n');
+                                if (translations[lang] && translations[lang][key]) {
+                                    el.textContent = translations[lang][key];
+                                }
+                            });
+
+                            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                                const key = el.getAttribute('data-i18n-placeholder');
+                                if (translations[lang] && translations[lang][key]) {
+                                    el.setAttribute('placeholder', translations[lang][key]);
+                                }
+                            });
+
+                            localStorage.setItem('casapastri_lang', lang);
+                            contentElements.forEach(el => el.classList.remove('opacity-0'));
+                            window.renderCalendars();
+                        }, 200);
+                    };
+
+                    // --- Calendar Logic ---
+                    let calendarDate = new Date();
+                    let selectedRange = { start: null, end: null };
+                    // Mock reserved dates (YYYY-MM-DD)
+                    const reservedDates = ['2026-03-10', '2026-03-11', '2026-03-12', '2026-04-15', '2026-04-16'];
+
+                    const HOLIDAYS = [
+                        '01-01', '01-06', '05-01', '10-12', '11-01', '12-06', '12-08', '12-25'
+                    ];
+
+                    const SEASONS = {
+                        LOW: [0, 1, 10, 11], // Jan, Feb, Nov, Dec (0-indexed)
+                        MID: [2, 3, 4, 9],   // Mar, Apr, May, Oct
+                        HIGH: [5, 6, 7, 8]   // Jun, Jul, Aug, Sep
+                    };
+
+                    const BASE_PRICES = { LOW: 80, MID: 100, HIGH: 120 };
+
+                    window.changeCalendarMonth = function (delta) {
+                        calendarDate.setMonth(calendarDate.getMonth() + delta);
+                        window.renderCalendars();
+                    };
+
+                    function isReserved(dateStr) { return reservedDates.includes(dateStr); }
+                    function isSelected(date) {
+                        if (!selectedRange.start) return false;
+                        if (!selectedRange.end) return date.getTime() === selectedRange.start.getTime();
+                        return date >= selectedRange.start && date <= selectedRange.end;
+                    }
+
+                    window.handleDateClick = function (d, m, y) {
+                        const clicked = new Date(y, m, d);
+                        clicked.setHours(0, 0, 0, 0);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+
+                        // Rule: No past dates
+                        if (clicked < today) return;
+
+                        // Rule: 2 days advance booking
+                        const minAdvance = new Date(today);
+                        minAdvance.setDate(today.getDate() + 2);
+                        if (clicked < minAdvance) {
+                            const lang = localStorage.getItem('casapastri_lang') || 'es';
+                            showBookingError(translations[lang]['error_advance_booking']);
+                            return;
+                        }
+
+                        const dateStr = clicked.toISOString().split('T')[0];
+                        if (isReserved(dateStr)) return;
+
+                        if (!selectedRange.start || (selectedRange.start && selectedRange.end)) {
+                            selectedRange.start = clicked;
+                            selectedRange.end = null;
+                        } else if (clicked < selectedRange.start) {
+                            selectedRange.start = clicked;
+                        } else {
+                            selectedRange.end = clicked;
+                        }
+
+                        hideBookingError();
+
+                        // Sync with Form Inputs
+                        const checkinEl = document.getElementById('checkin-input');
+                        const checkoutEl = document.getElementById('checkout-input');
+                        if (checkinEl) checkinEl.value = selectedRange.start ? selectedRange.start.toLocaleDateString() : '';
+                        if (checkoutEl) checkoutEl.value = selectedRange.end ? selectedRange.end.toLocaleDateString() : '';
+
+                        window.renderCalendars();
+                        window.renderPriceBreakdown();
+                    };
+
+                    window.showBookingError = function (msg) {
+                        const errorDiv = document.getElementById('booking-error');
+                        const errorMsg = document.getElementById('booking-error-msg');
+                        if (errorDiv && errorMsg) {
+                            errorMsg.textContent = msg;
+                            errorDiv.classList.remove('hidden');
+                            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    };
+
+                    window.hideBookingError = function () {
+                        const errorDiv = document.getElementById('booking-error');
+                        if (errorDiv) errorDiv.classList.add('hidden');
+                    };
+
+
+                    window.getPriceForDate = function (date) {
+                        const month = date.getMonth();
+                        const day = date.getDay(); // 0 is Sunday, 5 is Friday, 6 is Saturday
+                        const dateStr = `${String(month + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+                        // Rule 1: Holiday out of summer
+                        const isSummer = SEASONS.HIGH.includes(month);
+                        if (!isSummer && HOLIDAYS.includes(dateStr)) {
+                            return { price: 100, label: 'price_holiday' };
+                        }
+
+                        // Rule 2: Base season price
+                        let base = BASE_PRICES.LOW;
+                        if (SEASONS.MID.includes(month)) base = BASE_PRICES.MID;
+                        else if (SEASONS.HIGH.includes(month)) base = BASE_PRICES.HIGH;
+
+                        // Rule 3: Friday/Saturday surcharge
+                        if (day === 5 || day === 6) {
+                            return { price: base + 10, label: null, isWeekend: true };
+                        }
+
+                        return { price: base, label: null };
+                    };
+
+                    window.renderPriceBreakdown = function () {
+                        const summary = document.getElementById('price-summary');
+                        const list = document.getElementById('price-breakdown-list');
+                        const totalEl = document.getElementById('total-price-value');
+                        const depositEl = document.getElementById('deposit-amount-value');
+                        const remainingEl = document.getElementById('remaining-amount-value');
+                        
+                        if (!summary || !list || !totalEl) return;
+
+                        if (!selectedRange.start || !selectedRange.end) {
+                            summary.classList.add('hidden');
+                            window.hideBookingError();
+                            return;
+                        }
+
+                        const lang = localStorage.getItem('casapastri_lang') || 'es';
+                        const start = new Date(Math.min(selectedRange.start, selectedRange.end));
+                        const end = new Date(Math.max(selectedRange.start, selectedRange.end));
+                        const nights = Math.round((end - start) / (864e5));
+
+                        if (nights < 3) {
+                            window.showBookingError(translations[lang]['error_min_stay']);
+                            summary.classList.add('hidden');
+                            return;
+                        }
+
+                        summary.classList.remove('hidden');
+                        list.innerHTML = '';
+                        window.hideBookingError();
+                        
+                        let total = 0;
+                        let current = new Date(start);
+                        while (current < end) {
+                            const info = window.getPriceForDate(current);
+                            total += info.price;
+
+                            const item = document.createElement('li');
+                            item.className = 'flex justify-between items-center py-1 text-slate-600 dark:text-slate-400';
+                            
+                            const dateLabel = current.toLocaleDateString(lang, { day: 'numeric', month: 'short' });
+                            let note = '';
+                            if (info.label) note = ` <span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded ml-2 uppercase font-bold">${translations[lang][info.label]}</span>`;
+                            else if (info.isWeekend) note = ` <span class="text-[9px] bg-primary/10 text-primary px-1.5 py-0.5 rounded ml-2 uppercase font-bold">${translations[lang]['price_weekend']}</span>`;
+
+                            item.innerHTML = `<span>${dateLabel}${note}</span><span class="font-bold text-slate-800 dark:text-slate-200">${info.price}€</span>`;
+                            list.appendChild(item);
+                            current.setDate(current.getDate() + 1);
+                        }
+
+                        // Cleaning Fee is now included in daily rates logic
+                        // total += 76; -> Removed as per user request
+                        
+                        // We can add a non-zero item for "Cleaning included"
+                        const cleaningItem = document.createElement('li');
+                        cleaningItem.className = "flex justify-between items-center py-2 border-t border-slate-50 dark:border-slate-800 mt-2 font-medium text-slate-400 italic";
+                        cleaningItem.innerHTML = `<span class="text-[10px] uppercase tracking-wider">${translations[lang]['price_cleaning_included'] || 'Pre-limpieza y tasas'}</span><span class="font-bold uppercase text-[9px]">Incluido</span>`;
+                        list.appendChild(cleaningItem);
+
+                        totalEl.textContent = `${total}€`;
+                        
+                        // Stage payment calculation
+                        const deposit = Math.round(total * 0.3);
+                        const remaining = total - deposit;
+                        
+                        if (depositEl) depositEl.textContent = `${deposit}€`;
+                        if (remainingEl) remainingEl.textContent = `${remaining}€`;
+                    };
+
+                    window.renderCalendars = function () {
+                        const container = document.getElementById('calendar-container');
+                        if (!container) return;
+                        container.innerHTML = '';
+                        const lang = localStorage.getItem('casapastri_lang') || 'es';
+
+                        for (let i = 0; i < 2; i++) {
+                            const date = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + i, 1);
+                            const month = date.getMonth();
+                            const year = date.getFullYear();
+
+                            const calDiv = document.createElement('div');
+                            calDiv.className = 'calendar-month animate-in fade-in duration-500';
+
+                            let html = `
+                                <div class="mb-6">
+                                    <h4 class="text-xl font-bold text-slate-900 dark:text-white">${translations[lang]['month_' + month]} ${year}</h4>
+                                </div>
+                                <div class="grid grid-cols-7 gap-1 text-center mb-2">
+                                    ${[0, 1, 2, 3, 4, 5, 6].map(d => `<div class="text-[10px] uppercase tracking-tighter font-bold text-slate-400">${translations[lang]['day_' + d]}</div>`).join('')}
+                                </div>
+                                <div class="grid grid-cols-7 gap-1">
+                            `;
+
+                            const firstDay = new Date(year, month, 1).getDay();
+                            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                            for (let j = 0; j < firstDay; j++) html += `<div></div>`;
+
+                            for (let d = 1; d <= daysInMonth; d++) {
+                                const current = new Date(year, month, d);
+                                const currentStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                                const reserved = isReserved(currentStr);
+                                const selected = isSelected(current);
+
+                                let cellClass = "aspect-square flex items-center justify-center rounded-lg text-sm font-medium transition-all cursor-pointer ";
+
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                const minAdvance = new Date(today);
+                                minAdvance.setDate(today.getDate() + 2);
+
+                                const isPast = current < today;
+                                const isTooSoon = current < minAdvance;
+
+                                if (reserved || isPast || isTooSoon) {
+                                    cellClass += "text-slate-300 dark:text-slate-700 cursor-not-allowed ";
+                                    if (reserved) cellClass += "bg-red-50/50 dark:bg-red-900/10 text-red-300/50 ";
+                                } else if (selected) {
+                                    cellClass += "bg-primary text-white shadow-lg shadow-primary/30 z-10 scale-105";
+                                } else {
+                                    cellClass += "hover:bg-primary/10 text-slate-600 dark:text-slate-300";
+                                }
+
+                                html += `<div onclick="window.handleDateClick(${d}, ${month}, ${year})" class="${cellClass}">${d}</div>`;
+                            }
+
+                            html += `</div>`;
+                            calDiv.innerHTML = html;
+                            container.appendChild(calDiv);
+                        }
+                    };
+
+                    // --- Slider Logic ---
+                    let currentSlide = 0;
+                    const slides = document.querySelectorAll('.hero-slide');
+                    const dots = document.querySelectorAll('.dot');
+                    const totalSlides = slides.length;
+
+                    function goToSlide(n) {
+                        if (totalSlides === 0) return;
+                        slides[currentSlide].classList.remove('active');
+                        if (dots[currentSlide]) dots[currentSlide].classList.remove('active');
+                        currentSlide = (n + totalSlides) % totalSlides;
+                        slides[currentSlide].classList.add('active');
+                        if (dots[currentSlide]) dots[currentSlide].classList.add('active');
+                    }
+
+                    function nextSlide() { goToSlide(currentSlide + 1); }
+                    let slideInterval = setInterval(nextSlide, 3000);
+
+                    window.manualGoTo = function (n) {
+                        clearInterval(slideInterval);
+                        goToSlide(n);
+                        slideInterval = setInterval(nextSlide, 3000);
+                    };
+
+                    // --- Lightbox Logic ---
+                    const galleryImages = [
+                        'assets/images/salon1.jpg', 'assets/images/habitacion1-1.jpg', 'assets/images/habitacion2-1.jpg',
+                        'assets/images/lasconchas.jpg', 'assets/images/cocina.jpg', 'assets/images/baño.jpg'
+                    ];
+                    let currentLightboxIndex = 0;
+
+                    window.openLightbox = function (index) {
+                        currentLightboxIndex = index;
+                        const lightbox = document.getElementById('lightbox');
+                        const img = document.getElementById('lightbox-img');
+                        if (!lightbox || !img) return;
+                        img.src = galleryImages[index];
+                        lightbox.classList.remove('hidden');
+                        lightbox.classList.add('flex');
+                        lightbox.offsetHeight;
+                        lightbox.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    };
+
+                    window.closeLightbox = function (event, forceClose = false) {
+                        if (forceClose || (event && (event.target.id === 'lightbox' || event.target.closest('.lightbox-close')))) {
+                            const lightbox = document.getElementById('lightbox');
+                            if (!lightbox) return;
+                            lightbox.classList.remove('active');
+                            setTimeout(() => {
+                                lightbox.classList.add('hidden');
+                                lightbox.classList.remove('flex');
+                            }, 300);
+                            document.body.style.overflow = 'auto';
+                        }
+                    };
+
+                    window.changeLightboxSlide = function (direction, event) {
+                        if (event) event.stopPropagation();
+                        currentLightboxIndex = (currentLightboxIndex + direction + galleryImages.length) % galleryImages.length;
+                        const img = document.getElementById('lightbox-img');
+                        if (!img) return;
+                        img.style.opacity = '0';
+                        img.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            img.src = galleryImages[currentLightboxIndex];
+                            img.style.opacity = '1';
+                            img.style.transform = 'scale(1)';
+                        }, 150);
+                    };
+
+                    // --- Firebase Configuration & Initialization ---
+                    let db = null;
+                    const firebaseConfig = {
+                        apiKey: "AIzaSyBhKUEXJMyhV3rsdeK4N_mPdTj3GzJXvGU",
+                        authDomain: "casa-pastri---apartamento-lg.firebaseapp.com",
+                        projectId: "casa-pastri---apartamento-lg",
+                        storageBucket: "casa-pastri---apartamento-lg.firebasestorage.app",
+                        messagingSenderId: "86427288658",
+                        appId: "1:86427288658:web:dc957808dccf1316ce8b8b",
+                        measurementId: "G-DBSKY6WGYC"
+                    };
+
+                    // Dynamic Imports for Firebase Modular SDK
+                    async function initFirebase() {
+                        try {
+                            const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js");
+                            const { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js");
+                            const { getFunctions } = await import("https://www.gstatic.com/firebasejs/11.1.0/firebase-functions.js");
+
+                            const app = initializeApp(firebaseConfig);
+                            db = getFirestore(app);
+                            // Las funciones ahora se llaman vía HTTP Fetch para evitar problemas de CORS del SDK OnCall
+                            window.createCheckoutSession = async function(data) {
+                                const response = await fetch("https://us-central1-casa-pastri---apartamento-lg.cloudfunctions.net/createCheckoutSession", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ data: data })
+                                });
+                                if (!response.ok) {
+                                    const errorData = await response.json().catch(() => ({}));
+                                    throw new Error(errorData.error || "Error HTTP " + response.status);
+                                }
+                                return await response.json();
+                            };
+
+                            const { setDoc } = await import("https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js");
+
+                            // Initial Data Fetch & Seeding
+                            await fetchFirestoreData(doc, getDoc, setDoc);
+                        } catch (e) {
+                            console.warn("Firebase initialization failed, using fallbacks:", e);
+                        }
+                    }
+
+                    async function fetchFirestoreData(doc, getDoc, setDoc) {
+                        try {
+                            // Fetch Pricing
+                            const pricingRef = doc(db, "config", "pricing");
+                            const pricingDoc = await getDoc(pricingRef);
+                            if (pricingDoc.exists()) {
+                                const data = pricingDoc.data();
+                                if (data.BASE_PRICES) Object.assign(BASE_PRICES, data.BASE_PRICES);
+                                if (data.SEASONS) Object.assign(SEASONS, data.SEASONS);
+                                if (data.HOLIDAYS) HOLIDAYS.splice(0, HOLIDAYS.length, ...data.HOLIDAYS);
+                            } else {
+                                // Seed initial pricing - try catch specifically for this so failure here doesn't block read
+                                try { await setDoc(pricingRef, { BASE_PRICES, SEASONS, HOLIDAYS }); } catch(err) { console.warn("Could not seed pricing:", err); }
+                            }
+
+                            // Fetch Availability
+                            const availabilityRef = doc(db, "config", "availability");
+                            const availabilityDoc = await getDoc(availabilityRef);
+                            if (availabilityDoc.exists()) {
+                                const data = availabilityDoc.data();
+                                const combined = [];
+                                if (data.reservedDates) combined.push(...data.reservedDates);
+                                if (data.blockedDates) combined.push(...data.blockedDates);
+                                if (data.bookingComDates) combined.push(...data.bookingComDates);
+                                const uniqueDates = [...new Set(combined)];
+                                reservedDates.splice(0, reservedDates.length, ...uniqueDates);
+                            } else {
+                                // Seed initial availability
+                                try { await setDoc(availabilityRef, { reservedDates }); } catch(err) { console.warn("Could not seed availability:", err); }
+                            }
+                        } catch (e) {
+                            console.error("Error communicating with Firestore:", e);
+                            window.showBookingError("Error al cargar datos de disponibilidad. Es posible que el calendario no esté actualizado.");
+                        }
+                    }
+
+
+
+                    async function handleBookingSubmit(e) {
+                        e.preventDefault();
+                        if (!selectedRange.start || !selectedRange.end) {
+                            window.showBookingError("Por favor, selecciona las fechas de llegada y salida en el calendario.");
+                            return;
+                        }
+
+                        const btn = document.querySelector('button[form="booking-form"]');
+                        let originalBtnHtml = "";
+                        if (btn) {
+                            originalBtnHtml = btn.innerHTML;
+                            btn.disabled = true;
+                            btn.classList.add('opacity-50', 'pointer-events-none');
+                            btn.innerHTML = `<span class="material-icons animate-spin text-xl">autorenew</span><span class="font-black text-lg tracking-wide uppercase">Cargando...</span>`;
+                        }
+
+                        try {
+                            // 1. Final Availability Check
+                            const { doc, getDoc, collection, addDoc, serverTimestamp, updateDoc, arrayUnion } = await import("https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js");
+                            const availabilityRef = doc(db, "config", "availability");
+                            const availabilityDoc = await getDoc(availabilityRef);
+                            let currentReserved = reservedDates;
+
+                            if (availabilityDoc.exists()) {
+                                currentReserved = availabilityDoc.data().reservedDates || [];
+                            }
+
+                            // Check if any date in range is now reserved
+                            let conflict = false;
+                            let d = new Date(selectedRange.start);
+                            while (d <= selectedRange.end) {
+                                const ds = d.toISOString().split('T')[0];
+                                if (currentReserved.includes(ds)) { conflict = true; break; }
+                                d.setDate(d.getDate() + 1);
+                            }
+
+                            if (conflict) {
+                                window.showBookingError("Alguien acaba de reservar estas fechas. Por favor, elige otras.");
+                                if (btn) {
+                                    btn.disabled = false;
+                                    btn.classList.remove('opacity-50', 'pointer-events-none');
+                                    btn.innerHTML = originalBtnHtml;
+                                }
+                                return;
+                            }
+
+                            // 2. Save Booking
+                            const bookingData = {
+                                name: document.getElementById('form-name').value,
+                                email: document.getElementById('form-email').value,
+                                phone: document.getElementById('form-phone').value,
+                                message: document.getElementById('form-msg').value,
+                                checkIn: selectedRange.start.toISOString().split('T')[0],
+                                checkOut: selectedRange.end.toISOString().split('T')[0],
+                                guests: document.getElementById('form-guests').value,
+                                totalPrice: document.getElementById('total-price-value').textContent,
+                                status: "pending",
+                                createdAt: serverTimestamp()
+                            };
+
+                             const bookingDocRef = await addDoc(collection(db, "bookings"), bookingData);
+
+
+                            // 3. Block dates in Firestore & update local calendar
+                            const newDates = [];
+                            let cursor = new Date(selectedRange.start);
+                            while (cursor < selectedRange.end) {
+                                newDates.push(cursor.toISOString().split('T')[0]);
+                                cursor.setDate(cursor.getDate() + 1);
+                            }
+                            await updateDoc(availabilityRef, { reservedDates: arrayUnion(...newDates) });
+                            newDates.forEach(d => { if (!reservedDates.includes(d)) reservedDates.push(d); });
+                            window.renderCalendars();
+
+                             // 4. Stripe Checkout Redirection
+                             if (btn) btn.innerHTML = `<span class="material-icons animate-spin text-xl">autorenew</span><span class="font-black text-lg tracking-wide uppercase">Redirigiendo...</span>`;
+                             try {
+                                 const result = await window.createCheckoutSession({
+                                     bookingId: bookingDocRef.id,
+                                     totalPrice: bookingData.totalPrice,
+                                     successUrl: window.location.origin + "/reserva-confirmada.html",
+                                     cancelUrl: window.location.origin + "/reserva-cancelada.html"
+                                 });
+
+                                 if (result.data && result.data.url) {
+                                     window.location.href = result.data.url;
+                                 } else {
+                                     throw new Error("No payload URL returned from Stripe: " + JSON.stringify(result));
+                                 }
+                             } catch (stripeErr) {
+                                 console.error("Stripe Session Error:", stripeErr);
+                                 window.showBookingError("Error al conectar con Stripe. La reserva se ha guardado, pero el pago ha fallado.");
+                                 if (btn) {
+                                     btn.disabled = false;
+                                     btn.classList.remove('opacity-50', 'pointer-events-none');
+                                     btn.innerHTML = originalBtnHtml;
+                                 }
+                             }
+
+
+                        } catch (error) {
+                            console.error("Booking submission error:", error);
+                            window.showBookingError("Hubo un error al procesar tu reserva: " + (error.message || "Error desconocido"));
+                            if (btn) {
+                                btn.disabled = false;
+                                btn.classList.remove('opacity-50', 'pointer-events-none');
+                                btn.innerHTML = originalBtnHtml;
+                            }
+                        }
+                    }
+
+                    // --- Initialization ---
+                    async function init() {
+                        const savedLang = localStorage.getItem('casapastri_lang') || 'es';
+                        window.setLanguage(savedLang);
+
+                        // Load data from Firebase before first render
+                        await initFirebase();
+
+                        window.renderCalendars();
+
+                        const bookingForm = document.getElementById('booking-form');
+                        if (bookingForm) {
+                            bookingForm.addEventListener('submit', handleBookingSubmit);
+                        }
+
+                        document.addEventListener('keydown', (e) => {
+                            const lightbox = document.getElementById('lightbox');
+                            if (e.key === 'Escape') window.closeLightbox(null, true);
+                            if (lightbox && lightbox.classList.contains('active')) {
+                                if (e.key === 'ArrowLeft') window.changeLightboxSlide(-1);
+                                if (e.key === 'ArrowRight') window.changeLightboxSlide(1);
+                            }
+                        });
+                    }
+
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', init);
+                    } else {
+                        init();
+                    }
+                })();
+        </script>
+</body>
+
+</html>

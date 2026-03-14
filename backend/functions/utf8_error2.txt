@@ -1,0 +1,66 @@
+﻿node : C:\Users\marco\
+Desktop\antigravity\we
+b pastri\backend\funct
+ions\index.js:177
+En línea: 1 Carácter: 
+1
++ node index.js 2>&1 
+| Out-File -Encoding 
+utf8 utf8_error2.txt
++ ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (C:\Users\m   
+ arco\...ns\index.    
+js:177:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+exports.autoChargeRema
+iningBalance = functio
+ns.pubsub.schedule('0 
+0 * * *')
+                      
+                      
+          ^
+
+TypeError: functions.p
+ubsub.schedule is not 
+a function
+    at 
+Object.<anonymous> (C:
+\Users\marco\Desktop\a
+ntigravity\web pastri\
+backend\functions\inde
+x.js:177:55)
+    at 
+Module._compile (node:
+internal/modules/cjs/l
+oader:1804:14)
+    at Object..js (nod
+e:internal/modules/cjs
+/loader:1936:10)
+    at Module.load (no
+de:internal/modules/cj
+s/loader:1525:32)
+    at Module._load (n
+ode:internal/modules/c
+js/loader:1327:12)
+    at TracingChannel.
+traceSync (node:diagno
+stics_channel:328:14)
+    at wrapModuleLoad 
+(node:internal/modules
+/cjs/loader:245:24)
+    at Module.executeU
+serEntryPoint [as 
+runMain] (node:interna
+l/modules/run_main:154
+:5)
+    at node:internal/m
+ain/run_main_module:33
+:47
+
+Node.js v24.13.1

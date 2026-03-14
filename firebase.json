@@ -1,4 +1,8 @@
 {
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
   "hosting": {
     "public": ".",
     "ignore": [
@@ -8,9 +12,25 @@
     ],
     "rewrites": [
       {
+        "source": "/admin.html",
+        "destination": "/admin.html"
+      },
+      {
+        "source": "/reserva-confirmada.html",
+        "destination": "/reserva-confirmada.html"
+      },
+      {
+        "source": "/reserva-cancelada.html",
+        "destination": "/reserva-cancelada.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
     ]
+  },
+  "functions": {
+    "source": "backend/functions"
   }
 }
+
