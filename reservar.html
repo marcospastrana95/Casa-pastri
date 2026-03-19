@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reservar — Casa Pastri</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#0047AB",
+          "on-primary": "#FFFFFF",
+          "secondary": "#C5A059",
+          "on-secondary": "#FFFFFF",
+          "background": "#FFFFFF",
+          "on-background": "#1A1A1A",
+          "surface": "#F9F8F6",
+          "on-surface": "#1A1A1A",
+          "surface-container": "#F1EFE9",
+          "outline": "#D1C7B7",
+          "outline-variant": "#E5E1D8",
+          "primary-container": "#E6EEF9",
+          "on-primary-container": "#001B44"
+        },
+        fontFamily: {
+          "headline": ["Space Grotesk"],
+          "body": ["Inter"],
+          "label": ["Inter"]
+        },
+        borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  }
+  .content-fade { transition: opacity 0.2s ease; }
+  /* Calendar */
+  .calendar-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Space Grotesk', sans-serif;
+    border: 1px solid transparent;
+  }
+  .calendar-cell:hover:not(.cell-reserved):not(.cell-past) { background: rgba(0,71,171,0.08); border-color: rgba(0,71,171,0.2); }
+  .calendar-cell.cell-selected { background: #0047AB; color: #fff; }
+  .calendar-cell.cell-reserved { color: #ccc; cursor: not-allowed; background: rgba(200,0,0,0.04); }
+  .calendar-cell.cell-past { color: #ccc; cursor: not-allowed; }
+  /* Invoice */
+  .invoice-card {
+    background: #fff;
+    overflow: hidden;
+    border: 1px solid rgba(0,71,171,0.12);
+  }
+  .payment-cloud {
+    background: rgba(0,71,171,0.04);
+    border: 1px dashed rgba(0,71,171,0.3);
+    padding: 1rem;
+    position: relative;
+  }
+  /* Lang dropdown */
+  .lang-dropdown { display: none; }
+  .lang-trigger:hover + .lang-dropdown,
+  .lang-dropdown:hover { display: block; }
+</style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary selection:text-on-primary">
+
+<!-- TOP NAV -->
+<nav class="bg-white/90 backdrop-blur-xl fixed top-0 z-50 flex justify-between items-center w-full px-6 md:px-10 py-5 border-b border-outline-variant/30">
+  <a href="index.html" class="text-xl font-bold tracking-tighter text-primary font-headline">CASA PASTRI</a>
+  <div class="hidden md:flex items-center gap-10 font-headline text-xs tracking-[0.2em] font-medium">
+    <a class="text-on-background/60 hover:text-primary transition-colors duration-300" href="index.html#inicio" data-i18n="nav_home">INICIO</a>
+    <a class="text-on-background/60 hover:text-primary transition-colors duration-300" href="index.html#servicios" data-i18n="nav_services">SERVICIOS</a>
+    <a class="text-on-background/60 hover:text-primary transition-colors duration-300" href="index.html#galeria" data-i18n="nav_gallery">GALERÍA</a>
+    <a class="text-primary border-b-2 border-primary pb-0.5 transition-colors duration-300" href="reservar.html" data-i18n="nav_availability">RESERVA</a>
+  </div>
+  <div class="flex items-center gap-4">
+    <div class="relative">
+      <button class="lang-trigger flex items-center gap-2 text-xs font-headline tracking-widest text-primary border border-primary/20 px-3 py-1.5 hover:border-primary transition-colors">
+        <span id="current-lang-flag">🇪🇸</span>
+        <span id="current-lang-code" class="uppercase">ES</span>
+        <span class="material-symbols-outlined text-sm">expand_more</span>
+      </button>
+      <div class="lang-dropdown absolute right-0 top-full mt-1 bg-white border border-outline-variant/50 shadow-lg z-[60] min-w-[140px]">
+        <button onclick="window.setLanguage('es')" class="w-full text-left px-4 py-2.5 hover:bg-primary/5 flex items-center gap-3 text-xs font-headline tracking-wider transition-colors">🇪🇸 Español</button>
+        <button onclick="window.setLanguage('en')" class="w-full text-left px-4 py-2.5 hover:bg-primary/5 flex items-center gap-3 text-xs font-headline tracking-wider transition-colors">🇬🇧 English</button>
+        <button onclick="window.setLanguage('de')" class="w-full text-left px-4 py-2.5 hover:bg-primary/5 flex items-center gap-3 text-xs font-headline tracking-wider transition-colors">🇩🇪 Deutsch</button>
+        <button onclick="window.setLanguage('fr')" class="w-full text-left px-4 py-2.5 hover:bg-primary/5 flex items-center gap-3 text-xs font-headline tracking-wider transition-colors">🇫🇷 Français</button>
+      </div>
+    </div>
+    <button class="md:hidden text-primary" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="hidden fixed top-[73px] left-0 right-0 z-40 bg-white border-b border-outline-variant/30 py-6 px-6 flex-col gap-4">
+  <a class="font-headline text-sm tracking-widest text-on-background/60 block py-2" href="index.html#inicio" onclick="document.getElementById('mobile-menu').classList.add('hidden')" data-i18n="nav_home">INICIO</a>
+  <a class="font-headline text-sm tracking-widest text-on-background/60 block py-2" href="index.html#servicios" onclick="document.getElementById('mobile-menu').classList.add('hidden')" data-i18n="nav_services">SERVICIOS</a>
+  <a class="font-headline text-sm tracking-widest text-on-background/60 block py-2" href="index.html#galeria" onclick="document.getElementById('mobile-menu').classList.add('hidden')" data-i18n="nav_gallery">GALERÍA</a>
+  <a class="font-headline text-sm tracking-widest text-primary block py-2" href="reservar.html" data-i18n="nav_availability">RESERVA</a>
+</div>
+
+<main class="pt-[73px]">
+
+<!-- HERO -->
+<section class="bg-primary py-20 px-8 md:px-24">
+  <div class="max-w-4xl mx-auto content-fade">
+    <p class="font-headline text-xs tracking-[0.5em] text-on-primary/60 mb-4 uppercase" data-i18n="avail_tag">Tu estancia</p>
+    <h1 class="font-headline text-5xl md:text-7xl font-bold text-on-primary tracking-tighter mb-6" data-i18n="avail_title">RESERVA TU RINCÓN.</h1>
+    <p class="text-on-primary/70 font-body text-lg" data-i18n="avail_hint">Mínimo 3 noches · Pago del 30% hoy · 70% automático 10 días antes</p>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="bg-surface py-16 px-6 md:px-16">
+  <div class="max-w-7xl mx-auto space-y-8">
+
+    <!-- Calendar card -->
+    <div class="bg-white border border-outline-variant/40 p-6 md:p-10">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+        <div>
+          <h3 class="font-headline text-lg tracking-wider text-on-background" data-i18n="avail_subtitle">SELECCIONA TUS FECHAS</h3>
+          <p class="text-xs text-on-background/50 mt-1 font-body" data-i18n="avail_hint_short">Mínimo 3 noches de reserva</p>
+        </div>
+        <div class="flex items-center gap-6">
+          <!-- Legend -->
+          <div class="flex gap-4 text-[10px] font-headline tracking-widest text-on-background/50">
+            <span class="flex items-center gap-2"><span class="w-3 h-3 bg-red-100 border border-red-200 inline-block"></span><span data-i18n="avail_full">Ocupado</span></span>
+            <span class="flex items-center gap-2"><span class="w-3 h-3 bg-primary inline-block"></span><span data-i18n="avail_sel">Selección</span></span>
+          </div>
+          <!-- Month nav -->
+          <div class="flex gap-1">
+            <button onclick="window.changeCalendarMonth(-1)" class="p-2 text-on-background/50 hover:text-primary hover:bg-primary/5 border border-outline-variant transition-colors">
+              <span class="material-symbols-outlined text-sm">chevron_left</span>
+            </button>
+            <button onclick="window.changeCalendarMonth(1)" class="p-2 text-on-background/50 hover:text-primary hover:bg-primary/5 border border-outline-variant transition-colors">
+              <span class="material-symbols-outlined text-sm">chevron_right</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="calendar-container" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
+    </div>
+
+    <!-- Form + Invoice -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Form -->
+      <div class="lg:col-span-7 bg-white border border-outline-variant/40 p-8 md:p-10">
+        <form id="booking-form" class="space-y-6">
+          <p class="font-headline text-[10px] tracking-[0.4em] text-primary uppercase mb-6" data-i18n="form_personal_title">Tus Datos Personales</p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <label class="block font-headline text-[10px] tracking-widest text-on-background/50 uppercase" data-i18n="form_checkin">Entrada</label>
+              <input id="checkin-input" readonly type="text" placeholder="-- / -- / --"
+                class="w-full border-b border-outline p-2 text-sm font-headline bg-transparent focus:border-primary focus:outline-none transition-colors cursor-default"/>
+            </div>
+            <div class="space-y-1">
+              <label class="block font-headline text-[10px] tracking-widest text-on-background/50 uppercase" data-i18n="form_checkout">Salida</label>
+              <input id="checkout-input" readonly type="text" placeholder="-- / -- / --"
+                class="w-full border-b border-outline p-2 text-sm font-headline bg-transparent focus:border-primary focus:outline-none transition-colors cursor-default"/>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="block font-headline text-[10px] tracking-widest text-on-background/50 uppercase" data-i18n="form_name">Nombre completo</label>
+            <input id="form-name" type="text" required data-i18n-placeholder="form_name_placeholder"
+              class="w-full border-b border-outline p-2 text-sm font-headline bg-transparent focus:border-primary focus:outline-none transition-colors"/>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <label class="block font-headline text-[10px] tracking-widest text-on-background/50 uppercase" data-i18n="form_email">Email</label>
+              <input id="form-email" type="email" required placeholder="hola@ejemplo.com"
+                class="w-full border-b border-outline p-2 text-sm font-headline bg-transparent focus:border-primary focus:outline-none transition-colors"/>
+            </div>
+            <div class="space-y-1">
+              <label class="block font-headline text-[10px] tracking-widest text-on-background/50 uppercase" data-i18n="form_phone">Teléfono</label>
+              <input id="form-phone" type="tel" required placeholder="+34 600..."
+                class="w-full border-b border-outline p-2 text-sm font-headline bg-transparent focus:border-primary focus:outline-none transition-colors"/>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <label class="block font-headline text-[10px] tracking-widest text-on-background/50 uppercase" data-i18n="form_guests">Huéspedes</label>
+              <select id="form-guests" class="w-full border-b border-outline p-2 text-sm font-headline bg-transparent focus:border-primary focus:outline-none transition-colors cursor-pointer appearance-none">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+            <div class="space-y-1">
+              <label class="block font-headline text-[10px] tracking-widest text-on-background/50 uppercase" data-i18n="form_lang">Idioma preferido</label>
+              <select id="form-lang" class="w-full border-b border-outline p-2 text-sm font-headline bg-transparent focus:border-primary focus:outline-none transition-colors cursor-pointer appearance-none">
+                <option value="es">🇪🇸 Español</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="fr">🇫🇷 Français</option>
+              </select>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="block font-headline text-[10px] tracking-widest text-on-background/50 uppercase" data-i18n="form_msg">Mensaje (opcional)</label>
+            <textarea id="form-msg" rows="2" data-i18n-placeholder="form_msg_placeholder"
+              class="w-full border-b border-outline p-2 text-sm font-headline bg-transparent focus:border-primary focus:outline-none transition-colors resize-none"></textarea>
+          </div>
+          <div class="flex items-start gap-3 p-4 bg-surface border border-outline-variant/40 mt-2">
+            <span class="material-symbols-outlined text-primary text-base mt-0.5">verified_user</span>
+            <p class="text-[11px] text-on-background/50 leading-relaxed font-body" data-i18n="form_disclaimer">
+              Tus datos están seguros. Al hacer clic en reservar serás redirigido a la pasarela de pago seguro. Cancelación gratuita hasta 10 días antes de tu llegada.
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <!-- Invoice -->
+      <div class="lg:col-span-5 flex flex-col gap-4 lg:sticky lg:top-28">
+
+        <!-- Policy note -->
+        <div class="payment-cloud">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-primary text-base">security</span>
+            <span class="text-xs font-headline tracking-widest text-primary uppercase" data-i18n="price_deposit_label">Pago escalonado</span>
+          </div>
+          <p class="text-[11px] text-on-background/60 leading-snug font-body" data-i18n="price_policy_note">
+            Para confirmar tu reserva, abona solo el 30% ahora. El resto (70%) se cobrará automáticamente 10 días antes de tu entrada.
+          </p>
+        </div>
+
+        <!-- Invoice card -->
+        <div id="price-summary" class="hidden invoice-card flex-1">
+          <div class="bg-on-background p-6">
+            <h4 class="text-white text-sm font-headline tracking-[0.2em] uppercase" data-i18n="price_summary_title">Estado de Cuenta</h4>
+            <p class="text-white/40 text-[10px] uppercase font-headline tracking-widest mt-1" data-i18n="price_summary_desc">Tasas incluidas • Casa Pastri</p>
+          </div>
+          <div class="p-6 bg-white">
+            <ul id="price-breakdown-list" class="space-y-3 text-sm border-b border-outline-variant pb-5 mb-5"></ul>
+            <div class="space-y-4">
+              <div class="flex justify-between items-end">
+                <span class="text-xs font-headline tracking-widest text-on-background/40 uppercase" data-i18n="price_total_label">Total</span>
+                <span id="total-price-value" class="text-2xl font-bold font-headline text-on-background">0€</span>
+              </div>
+              <div class="p-4 bg-primary/5 border border-primary/20">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-headline tracking-widest text-primary uppercase" data-i18n="price_deposit_label">A pagar hoy (30%)</span>
+                  <span id="deposit-amount-value" class="text-2xl font-bold font-headline text-primary">0€</span>
+                </div>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-[10px] font-headline tracking-widest text-on-background/40 uppercase" data-i18n="price_remaining_label">Pendiente (70%)</span>
+                <span id="remaining-amount-value" class="text-sm font-bold font-headline text-on-background/50">0€</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error -->
+        <div id="booking-error" class="hidden bg-red-50 border border-red-200 p-4">
+          <p id="booking-error-msg" class="text-red-600 text-xs font-headline tracking-wide"></p>
+        </div>
+
+        <!-- Submit -->
+        <button form="booking-form" type="submit"
+          class="w-full py-6 bg-primary text-white font-headline text-sm font-bold tracking-[0.3em] hover:bg-secondary transition-all duration-500 uppercase">
+          <span data-i18n="form_btn">CONFIRMAR Y PAGAR</span>
+        </button>
+        <div class="flex justify-center gap-3 text-on-background/30 text-[10px] font-headline tracking-widest">
+          <span class="material-symbols-outlined text-sm">lock</span>
+          <span>PAGOS PROCESADOS POR STRIPE</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-background py-20 px-8 md:px-16 border-t border-outline-variant/30">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12">
+    <div class="flex flex-col gap-6 max-w-xs">
+      <div class="text-xl font-bold text-primary font-headline">CASA PASTRI</div>
+      <p class="font-body text-[11px] leading-relaxed text-on-background/50" data-i18n="footer_desc">
+        Tu casa lejos de casa en la joya escondida de las Islas Canarias.
+      </p>
+      <a href="https://www.instagram.com/casapastri/" target="_blank" rel="noopener noreferrer"
+        class="font-headline text-[10px] tracking-[0.3em] uppercase text-on-background/40 hover:text-primary transition-colors">
+        INSTAGRAM →
+      </a>
+    </div>
+    <div class="flex flex-wrap gap-x-20 gap-y-8">
+      <div>
+        <p class="font-headline text-[10px] tracking-[0.3em] uppercase text-on-background/30 mb-4" data-i18n="footer_nav_title">Navegación</p>
+        <ul class="space-y-3 font-body text-[11px] text-on-background/50">
+          <li><a class="hover:text-primary transition-colors" href="index.html#inicio" data-i18n="nav_home">Inicio</a></li>
+          <li><a class="hover:text-primary transition-colors" href="index.html#servicios" data-i18n="nav_services">Servicios</a></li>
+          <li><a class="hover:text-primary transition-colors" href="index.html#galeria" data-i18n="nav_gallery">Galería</a></li>
+          <li><a class="hover:text-primary transition-colors" href="reservar.html" data-i18n="nav_availability">Reserva</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-headline text-[10px] tracking-[0.3em] uppercase text-on-background/30 mb-4" data-i18n="footer_legal_title">Legal</p>
+        <ul class="space-y-3 font-body text-[11px] text-on-background/50">
+          <li><a class="hover:text-primary transition-colors" href="#" data-i18n="footer_legal_1">Aviso Legal</a></li>
+          <li><a class="hover:text-primary transition-colors" href="#" data-i18n="footer_legal_2">Política de Privacidad</a></li>
+          <li><a class="hover:text-primary transition-colors" href="#" data-i18n="footer_legal_3">Política de Cookies</a></li>
+          <li class="text-[10px] text-on-background/30 pt-1"><span data-i18n="footer_license">Licencia</span>: VV-35-3-0002715</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="font-body text-[10px] text-on-background/30">© 2026 Casa Pastri. <span data-i18n="footer_copy">Todos los derechos reservados.</span></p>
+    <p class="font-body text-[10px] text-on-background/30" data-i18n="footer_loc">Caleta de Sebo, La Graciosa, España</p>
+  </div>
+</footer>
+
+<script>
+    (function () {
+        // --- Translations ---
+        const translations = {
+            'es': {
+                'nav_home': 'Inicio', 'nav_services': 'Servicios', 'nav_gallery': 'Galería', 'nav_availability': 'Reservar',
+                'btn_book_now': 'Reserva Ahora',
+                'avail_tag': 'Tu estancia', 'avail_title': 'RESERVA TU RINCÓN.',
+                'avail_subtitle': 'SELECCIONA TUS FECHAS', 'avail_hint': 'Mínimo 3 noches · Pago del 30% hoy · 70% automático 10 días antes',
+                'avail_hint_short': 'Mínimo 3 noches de reserva',
+                'avail_free': 'Disponible', 'avail_full': 'Reservado', 'avail_sel': 'Selección',
+                'month_0': 'Enero', 'month_1': 'Febrero', 'month_2': 'Marzo', 'month_3': 'Abril', 'month_4': 'Mayo', 'month_5': 'Junio',
+                'month_6': 'Julio', 'month_7': 'Agosto', 'month_8': 'Septiembre', 'month_9': 'Octubre', 'month_10': 'Noviembre', 'month_11': 'Diciembre',
+                'day_0': 'Do', 'day_1': 'Lu', 'day_2': 'Ma', 'day_3': 'Mi', 'day_4': 'Ju', 'day_5': 'Vi', 'day_6': 'Sa',
+                'form_personal_title': 'Tus Datos Personales',
+                'form_checkin': 'Entrada', 'form_checkout': 'Salida', 'form_name': 'Nombre completo',
+                'form_name_placeholder': 'Ej. Juan Pérez', 'form_email': 'Email', 'form_email_placeholder': 'hola@ejemplo.com',
+                'form_phone': 'Teléfono', 'form_phone_placeholder': '+34 600 000 000', 'form_guests': 'Huéspedes',
+                'form_lang': 'Idioma preferido',
+                'form_msg': 'Mensaje (opcional)', 'form_msg_placeholder': '¿Alguna petición especial?',
+                'form_btn': 'CONFIRMAR Y PAGAR',
+                'form_disclaimer': 'Tus datos están seguros. Al hacer clic en reservar serás redirigido a la pasarela de pago seguro. Cancelación gratuita garantizada hasta 10 días antes de tu llegada.',
+                'price_summary_title': 'Estado de Cuenta', 'price_summary_desc': 'Tasas incluidas • Casa Pastri',
+                'price_total_label': 'Total', 'price_night': 'noche', 'price_nights': 'noches',
+                'price_weekend': 'Suplemento fin de semana', 'price_holiday': 'Tarifa festivo', 'price_override': 'Tarifa especial',
+                'price_deposit_label': 'A pagar hoy (30%)', 'price_remaining_label': 'Pendiente (70%)',
+                'price_policy_note': 'Para confirmar tu reserva, abona solo el 30% ahora. El resto (70%) se cobrará automáticamente 10 días antes de tu entrada.',
+                'price_cleaning_included': 'Pre-limpieza y tasas incluida',
+                'error_min_stay': 'La estancia mínima es de 3 noches.',
+                'error_advance_booking': 'Las reservas deben hacerse con al menos 2 días de antelación.',
+                'footer_desc': 'Tu casa lejos de casa en la joya escondida de las Islas Canarias.',
+                'footer_nav_title': 'Navegación', 'footer_legal_title': 'Legal',
+                'footer_legal_1': 'Aviso Legal', 'footer_legal_2': 'Política de Privacidad', 'footer_legal_3': 'Política de Cookies',
+                'footer_license': 'Licencia', 'footer_copy': 'Todos los derechos reservados.', 'footer_loc': 'Caleta de Sebo, La Graciosa, España'
+            },
+            'en': {
+                'nav_home': 'Home', 'nav_services': 'Experience', 'nav_gallery': 'Gallery', 'nav_availability': 'Book',
+                'btn_book_now': 'Book Now',
+                'avail_tag': 'Your stay', 'avail_title': 'BOOK YOUR CORNER.',
+                'avail_subtitle': 'SELECT YOUR DATES', 'avail_hint': 'Min. 3 nights · 30% deposit today · 70% auto-charged 10 days before',
+                'avail_hint_short': 'Minimum 3 nights',
+                'avail_free': 'Available', 'avail_full': 'Booked', 'avail_sel': 'Selected',
+                'month_0': 'January', 'month_1': 'February', 'month_2': 'March', 'month_3': 'April', 'month_4': 'May', 'month_5': 'June',
+                'month_6': 'July', 'month_7': 'August', 'month_8': 'September', 'month_9': 'October', 'month_10': 'November', 'month_11': 'December',
+                'day_0': 'Su', 'day_1': 'Mo', 'day_2': 'Tu', 'day_3': 'We', 'day_4': 'Th', 'day_5': 'Fr', 'day_6': 'Sa',
+                'form_personal_title': 'Your Personal Details',
+                'form_checkin': 'Check-in', 'form_checkout': 'Check-out', 'form_name': 'Full Name',
+                'form_name_placeholder': 'e.g. John Doe', 'form_email': 'Email', 'form_email_placeholder': 'hello@example.com',
+                'form_phone': 'Phone', 'form_phone_placeholder': '+34 600 000 000', 'form_guests': 'Guests',
+                'form_lang': 'Preferred language',
+                'form_msg': 'Message (optional)', 'form_msg_placeholder': 'Any special requests?',
+                'form_btn': 'CONFIRM & PAY',
+                'form_disclaimer': 'Your data is secure. Clicking confirm will redirect you to the secure payment gateway. Free cancellation up to 10 days before arrival.',
+                'price_summary_title': 'Account Summary', 'price_summary_desc': 'Taxes included • Casa Pastri',
+                'price_total_label': 'Total', 'price_night': 'night', 'price_nights': 'nights',
+                'price_weekend': 'Weekend surcharge', 'price_holiday': 'Holiday rate', 'price_override': 'Special rate',
+                'price_deposit_label': 'Pay now (30%)', 'price_remaining_label': 'Pending balance (70%)',
+                'price_policy_note': 'To confirm your booking, pay only 30% now. The remaining 70% will be charged automatically 10 days before check-in.',
+                'price_cleaning_included': 'Cleaning fee included',
+                'error_min_stay': 'The minimum stay is 3 nights.',
+                'error_advance_booking': 'Bookings must be made at least 2 days in advance.',
+                'footer_desc': 'Your home away from home in the hidden gem of the Canary Islands.',
+                'footer_nav_title': 'Navigation', 'footer_legal_title': 'Legal',
+                'footer_legal_1': 'Legal Notice', 'footer_legal_2': 'Privacy Policy', 'footer_legal_3': 'Cookie Policy',
+                'footer_license': 'License', 'footer_copy': 'All rights reserved.', 'footer_loc': 'Caleta de Sebo, La Graciosa, Spain'
+            },
+            'de': {
+                'nav_home': 'Startseite', 'nav_services': 'Erlebnis', 'nav_gallery': 'Galerie', 'nav_availability': 'Buchen',
+                'btn_book_now': 'Jetzt Buchen',
+                'avail_tag': 'Ihr Aufenthalt', 'avail_title': 'IHR PARADIES BUCHEN.',
+                'avail_subtitle': 'WÄHLEN SIE IHR DATUM', 'avail_hint': 'Mind. 3 Nächte · 30% Anzahlung heute · 70% automatisch 10 Tage vorher',
+                'avail_hint_short': 'Mindestaufenthalt 3 Nächte',
+                'avail_free': 'Verfügbar', 'avail_full': 'Belegt', 'avail_sel': 'Ausgewählt',
+                'month_0': 'Januar', 'month_1': 'Februar', 'month_2': 'März', 'month_3': 'April', 'month_4': 'Mai', 'month_5': 'Juni',
+                'month_6': 'Juli', 'month_7': 'August', 'month_8': 'September', 'month_9': 'Oktober', 'month_10': 'November', 'month_11': 'Dezember',
+                'day_0': 'So', 'day_1': 'Mo', 'day_2': 'Di', 'day_3': 'Mi', 'day_4': 'Do', 'day_5': 'Fr', 'day_6': 'Sa',
+                'form_personal_title': 'Ihre persönlichen Daten',
+                'form_checkin': 'Anreise', 'form_checkout': 'Abreise', 'form_name': 'Vollständiger Name',
+                'form_name_placeholder': 'z.B. Max Mustermann', 'form_email': 'E-Mail', 'form_email_placeholder': 'hallo@beispiel.de',
+                'form_phone': 'Telefon', 'form_phone_placeholder': '+34 600 000 000', 'form_guests': 'Gäste',
+                'form_lang': 'Bevorzugte Sprache',
+                'form_msg': 'Nachricht (optional)', 'form_msg_placeholder': 'Besondere Wünsche?',
+                'form_btn': 'BESTÄTIGEN & ZAHLEN',
+                'form_disclaimer': 'Ihre Daten sind sicher. Sie werden zur sicheren Zahlungsseite weitergeleitet. Kostenlose Stornierung bis 10 Tage vor Anreise.',
+                'price_summary_title': 'Kontostand', 'price_summary_desc': 'Steuern inklusive • Casa Pastri',
+                'price_total_label': 'Gesamt', 'price_night': 'Nacht', 'price_nights': 'Nächte',
+                'price_weekend': 'Wochenendzuschlag', 'price_holiday': 'Ferientarif', 'price_override': 'Sondertarif',
+                'price_deposit_label': 'Jetzt zahlen (30%)', 'price_remaining_label': 'Restbetrag (70%)',
+                'price_policy_note': 'Die restlichen 70% werden 10 Tage vor dem Check-in automatisch abgebucht.',
+                'price_cleaning_included': 'Reinigungsgebühr inklusive',
+                'error_min_stay': 'Der Mindestaufenthalt beträgt 3 Nächte.',
+                'error_advance_booking': 'Buchungen müssen mindestens 2 Tage im Voraus erfolgen.',
+                'footer_desc': 'Dein zweites Zuhause im verborgenen Juwel der Kanaren.',
+                'footer_nav_title': 'Navigation', 'footer_legal_title': 'Rechtliches',
+                'footer_legal_1': 'Impressum', 'footer_legal_2': 'Datenschutz', 'footer_legal_3': 'Cookies',
+                'footer_license': 'Lizenz', 'footer_copy': 'Alle Rechte vorbehalten.', 'footer_loc': 'Caleta de Sebo, La Graciosa, Spanien'
+            },
+            'fr': {
+                'nav_home': 'Accueil', 'nav_services': 'Évasion', 'nav_gallery': 'Galerie', 'nav_availability': 'Réserver',
+                'btn_book_now': 'Réserver',
+                'avail_tag': 'Votre séjour', 'avail_title': 'RÉSERVEZ VOTRE COIN.',
+                'avail_subtitle': 'CHOISISSEZ VOS DATES', 'avail_hint': 'Min. 3 nuits · Acompte 30% aujourd\'hui · 70% automatique 10 jours avant',
+                'avail_hint_short': 'Séjour minimum 3 nuits',
+                'avail_free': 'Disponible', 'avail_full': 'Réservé', 'avail_sel': 'Sélection',
+                'month_0': 'Janvier', 'month_1': 'Février', 'month_2': 'Mars', 'month_3': 'Avril', 'month_4': 'Mai', 'month_5': 'Juin',
+                'month_6': 'Juillet', 'month_7': 'Août', 'month_8': 'Septembre', 'month_9': 'Octobre', 'month_10': 'Novembre', 'month_11': 'Décembre',
+                'day_0': 'Di', 'day_1': 'Lu', 'day_2': 'Ma', 'day_3': 'Me', 'day_4': 'Je', 'day_5': 'Ve', 'day_6': 'Sa',
+                'form_personal_title': 'Vos coordonnées',
+                'form_checkin': 'Arrivée', 'form_checkout': 'Départ', 'form_name': 'Nom complet',
+                'form_name_placeholder': 'Ex. Jean Dupont', 'form_email': 'E-mail', 'form_email_placeholder': 'bonjour@exemple.fr',
+                'form_phone': 'Téléphone', 'form_phone_placeholder': '+34 600 000 000', 'form_guests': 'Voyageurs',
+                'form_lang': 'Langue préférée',
+                'form_msg': 'Message (optionnel)', 'form_msg_placeholder': 'Des demandes particulières ?',
+                'form_btn': 'CONFIRMER & PAYER',
+                'form_disclaimer': 'Vos données sont sécurisées. Vous serez redirigé vers la passerelle de paiement sécurisée. Annulation gratuite jusqu\'à 10 jours avant votre arrivée.',
+                'price_summary_title': 'État de Compte', 'price_summary_desc': 'Taxes incluses • Casa Pastri',
+                'price_total_label': 'Total', 'price_night': 'nuit', 'price_nights': 'nuits',
+                'price_weekend': 'Supplément week-end', 'price_holiday': 'Tarif jour férié', 'price_override': 'Tarif spécial',
+                'price_deposit_label': 'Payer maintenant (30%)', 'price_remaining_label': 'Solde restant (70%)',
+                'price_policy_note': 'Les 70% restants seront prélevés automatiquement 10 jours avant l\'arrivée.',
+                'price_cleaning_included': 'Frais de ménage inclus',
+                'error_min_stay': 'Le séjour minimum est de 3 nuits.',
+                'error_advance_booking': 'Les réservations doivent être effectuées au moins 2 jours à l\'avance.',
+                'footer_desc': 'Votre chez-vous loin de chez vous dans le joyau caché des Canaries.',
+                'footer_nav_title': 'Navigation', 'footer_legal_title': 'Légal',
+                'footer_legal_1': 'Mentions Légales', 'footer_legal_2': 'Confidentialité', 'footer_legal_3': 'Cookies',
+                'footer_license': 'Licencia', 'footer_copy': 'Tous droits réservés.', 'footer_loc': 'Caleta de Sebo, La Graciosa, Espagne'
+            }
+        };
+
+        const flags = { 'es': '🇪🇸', 'en': '🇬🇧', 'de': '🇩🇪', 'fr': '🇫🇷' };
+
+        window.setLanguage = function (lang) {
+            const flagEl = document.getElementById('current-lang-flag');
+            const codeEl = document.getElementById('current-lang-code');
+            if (flagEl) flagEl.textContent = flags[lang];
+            if (codeEl) codeEl.textContent = lang.toUpperCase();
+            const contentElements = document.querySelectorAll('.content-fade');
+            contentElements.forEach(el => el.classList.add('opacity-0'));
+            setTimeout(() => {
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (translations[lang] && translations[lang][key]) el.textContent = translations[lang][key];
+                });
+                document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                    const key = el.getAttribute('data-i18n-placeholder');
+                    if (translations[lang] && translations[lang][key]) el.setAttribute('placeholder', translations[lang][key]);
+                });
+                const formLang = document.getElementById('form-lang');
+                if (formLang) formLang.value = lang;
+                localStorage.setItem('casapastri_lang', lang);
+                contentElements.forEach(el => el.classList.remove('opacity-0'));
+                window.renderCalendars();
+            }, 200);
+        };
+
+        // --- Calendar Logic ---
+        let calendarDate = new Date();
+        let selectedRange = { start: null, end: null };
+        const reservedDates = [];
+
+        const HOLIDAYS = ['01-01', '01-06', '05-01', '10-12', '11-01', '12-06', '12-08', '12-25'];
+        const SEASONS = { LOW: [0, 1, 10, 11], MID: [2, 3, 4, 9], HIGH: [5, 6, 7, 8] };
+        const BASE_PRICES = { LOW: 80, MID: 100, HIGH: 120 };
+        let globalDiscount = 0;
+        let priceOverrides = {};
+
+        window.changeCalendarMonth = function (delta) {
+            calendarDate.setMonth(calendarDate.getMonth() + delta);
+            window.renderCalendars();
+        };
+
+        function isReserved(dateStr) { return reservedDates.includes(dateStr); }
+        function isSelected(date) {
+            if (!selectedRange.start) return false;
+            if (!selectedRange.end) return date.getTime() === selectedRange.start.getTime();
+            return date >= selectedRange.start && date <= selectedRange.end;
+        }
+
+        window.handleDateClick = function (d, m, y) {
+            const clicked = new Date(y, m, d);
+            clicked.setHours(0, 0, 0, 0);
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            if (clicked < today) return;
+            const minAdvance = new Date(today);
+            minAdvance.setDate(today.getDate() + 2);
+            if (clicked < minAdvance) {
+                const lang = localStorage.getItem('casapastri_lang') || 'es';
+                showBookingError(translations[lang]['error_advance_booking']);
+                return;
+            }
+            const dateStr = clicked.toISOString().split('T')[0];
+            if (isReserved(dateStr)) return;
+            if (!selectedRange.start || (selectedRange.start && selectedRange.end)) {
+                selectedRange.start = clicked; selectedRange.end = null;
+            } else if (clicked < selectedRange.start) {
+                selectedRange.start = clicked;
+            } else {
+                selectedRange.end = clicked;
+            }
+            hideBookingError();
+            const checkinEl = document.getElementById('checkin-input');
+            const checkoutEl = document.getElementById('checkout-input');
+            if (checkinEl) checkinEl.value = selectedRange.start ? selectedRange.start.toLocaleDateString() : '';
+            if (checkoutEl) checkoutEl.value = selectedRange.end ? selectedRange.end.toLocaleDateString() : '';
+            window.renderCalendars();
+            window.renderPriceBreakdown();
+        };
+
+        function showBookingError(msg) {
+            const errorDiv = document.getElementById('booking-error');
+            const errorMsg = document.getElementById('booking-error-msg');
+            if (errorDiv && errorMsg) {
+                errorMsg.textContent = msg;
+                errorDiv.classList.remove('hidden');
+                errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        window.showBookingError = showBookingError;
+
+        function hideBookingError() {
+            const errorDiv = document.getElementById('booking-error');
+            if (errorDiv) errorDiv.classList.add('hidden');
+        }
+        window.hideBookingError = hideBookingError;
+
+        function applyDiscount(price) {
+            if (!globalDiscount || globalDiscount <= 0) return price;
+            return Math.round(price * (1 - globalDiscount / 100));
+        }
+
+        window.getPriceForDate = function (date) {
+            const month = date.getMonth();
+            const day = date.getDay();
+            const isoStr = `${date.getFullYear()}-${String(month + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            if (priceOverrides[isoStr] !== undefined) {
+                return { price: applyDiscount(priceOverrides[isoStr]), label: 'price_override' };
+            }
+            const dateStr = `${String(month + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            const isSummer = SEASONS.HIGH.includes(month);
+            if (!isSummer && HOLIDAYS.includes(dateStr)) return { price: applyDiscount(100), label: 'price_holiday' };
+            let base = BASE_PRICES.LOW;
+            if (SEASONS.MID.includes(month)) base = BASE_PRICES.MID;
+            else if (SEASONS.HIGH.includes(month)) base = BASE_PRICES.HIGH;
+            if (day === 5 || day === 6) return { price: applyDiscount(base + 10), label: null, isWeekend: true };
+            return { price: applyDiscount(base), label: null };
+        };
+
+        window.renderPriceBreakdown = function () {
+            const summary = document.getElementById('price-summary');
+            const list = document.getElementById('price-breakdown-list');
+            const totalEl = document.getElementById('total-price-value');
+            const depositEl = document.getElementById('deposit-amount-value');
+            const remainingEl = document.getElementById('remaining-amount-value');
+            if (!summary || !list || !totalEl) return;
+            if (!selectedRange.start || !selectedRange.end) { summary.classList.add('hidden'); hideBookingError(); return; }
+            const lang = localStorage.getItem('casapastri_lang') || 'es';
+            const start = new Date(Math.min(selectedRange.start, selectedRange.end));
+            const end = new Date(Math.max(selectedRange.start, selectedRange.end));
+            const nights = Math.round((end - start) / 864e5);
+            if (nights < 3) { showBookingError(translations[lang]['error_min_stay']); summary.classList.add('hidden'); return; }
+            summary.classList.remove('hidden');
+            list.innerHTML = '';
+            hideBookingError();
+            let total = 0;
+            let current = new Date(start);
+            while (current < end) {
+                const info = window.getPriceForDate(current);
+                total += info.price;
+                const item = document.createElement('li');
+                item.className = 'flex justify-between items-center py-1 text-on-background/60 text-xs font-body';
+                const dateLabel = current.toLocaleDateString(lang, { day: 'numeric', month: 'short' });
+                let note = '';
+                if (info.label && translations[lang][info.label]) note = ` <span class="text-[9px] bg-primary/10 text-primary px-1.5 py-0.5 ml-2 uppercase font-headline tracking-widest">${translations[lang][info.label]}</span>`;
+                else if (info.isWeekend) note = ` <span class="text-[9px] bg-secondary/10 text-secondary px-1.5 py-0.5 ml-2 uppercase font-headline tracking-widest">${translations[lang]['price_weekend']}</span>`;
+                item.innerHTML = `<span>${dateLabel}${note}</span><span class="font-bold font-headline text-on-background">${info.price}€</span>`;
+                list.appendChild(item);
+                current.setDate(current.getDate() + 1);
+            }
+            const cleaningItem = document.createElement('li');
+            cleaningItem.className = 'flex justify-between items-center py-2 border-t border-outline-variant mt-2 text-on-background/40';
+            cleaningItem.innerHTML = `<span class="text-[10px] uppercase font-headline tracking-widest">${translations[lang]['price_cleaning_included'] || 'Pre-limpieza y tasas'}</span><span class="font-headline text-[10px] uppercase tracking-widest">Incluido</span>`;
+            list.appendChild(cleaningItem);
+            totalEl.textContent = `${total}€`;
+            const deposit = Math.round(total * 0.3);
+            const remaining = total - deposit;
+            if (depositEl) depositEl.textContent = `${deposit}€`;
+            if (remainingEl) remainingEl.textContent = `${remaining}€`;
+        };
+
+        window.renderCalendars = function () {
+            const container = document.getElementById('calendar-container');
+            if (!container) return;
+            container.innerHTML = '';
+            const lang = localStorage.getItem('casapastri_lang') || 'es';
+            for (let i = 0; i < 2; i++) {
+                const d = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + i, 1);
+                const month = d.getMonth();
+                const year = d.getFullYear();
+                const calDiv = document.createElement('div');
+                calDiv.className = 'calendar-month';
+                let html = `<div class="mb-5 font-headline text-base tracking-wider text-on-background font-bold">${translations[lang]['month_' + month]} ${year}</div>
+                    <div class="grid grid-cols-7 gap-0.5 mb-1">
+                        ${[0,1,2,3,4,5,6].map(dd => `<div class="text-center text-[9px] uppercase tracking-widest font-headline text-on-background/40 py-1">${translations[lang]['day_' + dd]}</div>`).join('')}
+                    </div>
+                    <div class="grid grid-cols-7 gap-0.5">`;
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                for (let j = 0; j < firstDay; j++) html += `<div></div>`;
+                const today = new Date(); today.setHours(0, 0, 0, 0);
+                const minAdvance = new Date(today); minAdvance.setDate(today.getDate() + 2);
+                for (let dd = 1; dd <= daysInMonth; dd++) {
+                    const cur = new Date(year, month, dd);
+                    const curStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dd).padStart(2, '0')}`;
+                    const reserved = isReserved(curStr);
+                    const selected = isSelected(cur);
+                    const isPast = cur < today;
+                    const isTooSoon = cur < minAdvance;
+                    let cls = 'calendar-cell text-on-background/70 ';
+                    if (reserved || isPast || isTooSoon) {
+                        cls += 'cell-past ';
+                        if (reserved) cls += 'cell-reserved ';
+                    } else if (selected) {
+                        cls += 'cell-selected font-bold ';
+                    } else {
+                        cls += 'hover:bg-primary/8 cursor-pointer ';
+                    }
+                    html += `<div onclick="window.handleDateClick(${dd}, ${month}, ${year})" class="${cls}">${dd}</div>`;
+                }
+                html += `</div>`;
+                calDiv.innerHTML = html;
+                container.appendChild(calDiv);
+            }
+        };
+
+        // --- Firebase & Stripe ---
+        let db = null;
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhKUEXJMyhV3rsdeK4N_mPdTj3GzJXvGU",
+            authDomain: "casa-pastri---apartamento-lg.firebaseapp.com",
+            projectId: "casa-pastri---apartamento-lg",
+            storageBucket: "casa-pastri---apartamento-lg.firebasestorage.app",
+            messagingSenderId: "86427288658",
+            appId: "1:86427288658:web:dc957808dccf1316ce8b8b",
+            measurementId: "G-DBSKY6WGYC"
+        };
+
+        async function initFirebase() {
+            try {
+                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js");
+                const { getFirestore, doc, getDoc, setDoc } = await import("https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js");
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                window.createCheckoutSession = async function (data) {
+                    const response = await fetch("https://us-central1-casa-pastri---apartamento-lg.cloudfunctions.net/createCheckoutSession", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ data: data })
+                    });
+                    if (!response.ok) { const e = await response.json().catch(() => ({})); throw new Error(e.error || "HTTP " + response.status); }
+                    return await response.json();
+                };
+                await fetchFirestoreData(doc, getDoc, setDoc);
+            } catch (e) {
+                console.warn("Firebase init failed, using defaults:", e);
+            }
+        }
+
+        async function fetchFirestoreData(doc, getDoc, setDoc) {
+            try {
+                const pricingRef = doc(db, "config", "pricing");
+                const pricingDoc = await getDoc(pricingRef);
+                if (pricingDoc.exists()) {
+                    const data = pricingDoc.data();
+                    if (data.BASE_PRICES) Object.assign(BASE_PRICES, data.BASE_PRICES);
+                    if (data.SEASONS) Object.assign(SEASONS, data.SEASONS);
+                    if (data.HOLIDAYS) HOLIDAYS.splice(0, HOLIDAYS.length, ...data.HOLIDAYS);
+                    if (data.globalDiscount !== undefined) globalDiscount = data.globalDiscount;
+                    if (data.priceOverrides) Object.assign(priceOverrides, data.priceOverrides);
+                } else {
+                    try { await setDoc(pricingRef, { BASE_PRICES, SEASONS, HOLIDAYS }); } catch(err) { console.warn("Could not seed pricing:", err); }
+                }
+                const availabilityRef = doc(db, "config", "availability");
+                const availabilityDoc = await getDoc(availabilityRef);
+                if (availabilityDoc.exists()) {
+                    const data = availabilityDoc.data();
+                    const combined = [];
+                    if (data.reservedDates) combined.push(...data.reservedDates);
+                    if (data.blockedDates) combined.push(...data.blockedDates);
+                    if (data.bookingComDates) combined.push(...data.bookingComDates);
+                    reservedDates.splice(0, reservedDates.length, ...[...new Set(combined)]);
+                } else {
+                    try { await setDoc(availabilityRef, { reservedDates }); } catch(err) { console.warn("Could not seed availability:", err); }
+                }
+                window.renderCalendars();
+            } catch (e) {
+                console.error("Firestore error:", e);
+                showBookingError("Error al cargar datos de disponibilidad.");
+            }
+        }
+
+        async function handleBookingSubmit(e) {
+            e.preventDefault();
+            if (!selectedRange.start || !selectedRange.end) {
+                showBookingError("Por favor, selecciona las fechas de llegada y salida en el calendario.");
+                return;
+            }
+            const btn = document.querySelector('button[form="booking-form"]');
+            let originalBtnHtml = "";
+            if (btn) {
+                originalBtnHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'pointer-events-none');
+                btn.innerHTML = `<span class="font-headline tracking-widest text-sm">PROCESANDO...</span>`;
+            }
+            try {
+                const { doc, getDoc, collection, addDoc, serverTimestamp, updateDoc, arrayUnion } = await import("https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js");
+                const availabilityRef = doc(db, "config", "availability");
+                const availabilityDoc = await getDoc(availabilityRef);
+                let currentReserved = reservedDates;
+                if (availabilityDoc.exists()) currentReserved = availabilityDoc.data().reservedDates || [];
+                let conflict = false;
+                let d = new Date(selectedRange.start);
+                while (d <= selectedRange.end) {
+                    const ds = d.toISOString().split('T')[0];
+                    if (currentReserved.includes(ds)) { conflict = true; break; }
+                    d.setDate(d.getDate() + 1);
+                }
+                if (conflict) {
+                    showBookingError("Alguien acaba de reservar estas fechas. Por favor, elige otras.");
+                    if (btn) { btn.disabled = false; btn.classList.remove('opacity-50', 'pointer-events-none'); btn.innerHTML = originalBtnHtml; }
+                    return;
+                }
+                const preferredLang = document.getElementById('form-lang')?.value || localStorage.getItem('casapastri_lang') || 'es';
+                const bookingData = {
+                    name: document.getElementById('form-name').value,
+                    email: document.getElementById('form-email').value,
+                    phone: document.getElementById('form-phone').value,
+                    message: document.getElementById('form-msg').value,
+                    preferredLang,
+                    checkIn: selectedRange.start.toISOString().split('T')[0],
+                    checkOut: selectedRange.end.toISOString().split('T')[0],
+                    guests: document.getElementById('form-guests').value,
+                    totalPrice: document.getElementById('total-price-value').textContent,
+                    depositAmount: document.getElementById('deposit-amount-value').textContent,
+                    remainingAmount: document.getElementById('remaining-amount-value').textContent,
+                    status: "pending",
+                    createdAt: serverTimestamp()
+                };
+                const bookingDocRef = await addDoc(collection(db, "bookings"), bookingData);
+                const newDates = [];
+                let cursor = new Date(selectedRange.start);
+                while (cursor < selectedRange.end) {
+                    newDates.push(cursor.toISOString().split('T')[0]);
+                    cursor.setDate(cursor.getDate() + 1);
+                }
+                await updateDoc(availabilityRef, { reservedDates: arrayUnion(...newDates) });
+                newDates.forEach(d => { if (!reservedDates.includes(d)) reservedDates.push(d); });
+                window.renderCalendars();
+                if (btn) btn.innerHTML = `<span class="font-headline tracking-widest text-sm">REDIRIGIENDO...</span>`;
+                try {
+                    const result = await window.createCheckoutSession({
+                        bookingId: bookingDocRef.id,
+                        totalPrice: bookingData.totalPrice,
+                        successUrl: window.location.origin + "/confirmacion.html?id=" + bookingDocRef.id,
+                        cancelUrl: window.location.origin + "/reserva-cancelada.html"
+                    });
+                    if (result.data && result.data.url) {
+                        window.location.href = result.data.url;
+                    } else {
+                        throw new Error("No URL from Stripe: " + JSON.stringify(result));
+                    }
+                } catch (stripeErr) {
+                    console.error("Stripe error:", stripeErr);
+                    showBookingError("Error al conectar con Stripe. La reserva se ha guardado, pero el pago ha fallado.");
+                    if (btn) { btn.disabled = false; btn.classList.remove('opacity-50', 'pointer-events-none'); btn.innerHTML = originalBtnHtml; }
+                }
+            } catch (error) {
+                console.error("Booking error:", error);
+                showBookingError("Hubo un error al procesar tu reserva: " + (error.message || "Error desconocido"));
+                if (btn) { btn.disabled = false; btn.classList.remove('opacity-50', 'pointer-events-none'); btn.innerHTML = originalBtnHtml; }
+            }
+        }
+
+        async function init() {
+            const savedLang = localStorage.getItem('casapastri_lang') || 'es';
+            window.setLanguage(savedLang);
+            await initFirebase();
+            window.renderCalendars();
+            const bookingForm = document.getElementById('booking-form');
+            if (bookingForm) bookingForm.addEventListener('submit', handleBookingSubmit);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+</script>
+</body>
+</html>
