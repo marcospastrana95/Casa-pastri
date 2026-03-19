@@ -24,6 +24,10 @@
         "destination": "/reserva-cancelada.html"
       },
       {
+        "source": "/reservar.html",
+        "destination": "/reservar.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
